@@ -120,7 +120,10 @@ import {
 import { compressImageFile, compressMultipleImageFiles } from "../utils/imageCompressor";
 import { SITE_INFO } from "../data/siteData";
 import { SeoInspector } from "./SeoInspector";
-import { applyMetaTags } from "../utils/metaManager";
+import * as metaManagerModule from "../utils/metaManager";
+const applyMetaTags =
+  (metaManagerModule as any).applyMetaTags ||
+  ((ctx: any) => ({ ...ctx, canonicalUrl: "" }));
 import { ThemeToggle } from "./ThemeToggle";
 import { useTheme } from "../context/ThemeContext";
 

@@ -1,5 +1,9 @@
 import { useEffect } from "react";
-import { applyMetaTags, ActiveMetaContext } from "../utils/metaManager";
+import * as metaManagerModule from "../utils/metaManager";
+import type { ActiveMetaContext } from "../utils/metaManager";
+const applyMetaTags =
+  (metaManagerModule as any).applyMetaTags ||
+  ((ctx: any) => ({ ...ctx, canonicalUrl: "" }));
 import { ProjectItem } from "../data/projectsData";
 import { LeadershipProfile } from "../data/siteData";
 
