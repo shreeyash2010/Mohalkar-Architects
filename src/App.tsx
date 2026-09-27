@@ -207,6 +207,8 @@ function AppContent() {
       {/* Leadership Profile Modal */}
       <LeadershipModal
         profile={selectedLeader}
+        member={selectedLeader}
+        leader={selectedLeader}
         onClose={() => setSelectedLeaderId(null)}
         onOpenEnquiry={() => {
           setSelectedLeaderId(null);
