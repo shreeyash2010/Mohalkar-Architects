@@ -19,9 +19,9 @@ import { ProjectItem } from "./data/projectsData";
 import { getPublishedProjects, recordPageView } from "./utils/projectStorage";
 import { LEADERSHIP_PROFILES, SITE_INFO } from "./data/siteData";
 import { MetaTagManager } from "./components/MetaTagManager";
-import { useTheme } from "./context/ThemeContext";
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
 
-export default function App() {
+function AppContent() {
   const { isDark } = useTheme();
   const [activeTab, setActiveTab] = useState<string>("home");
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
@@ -265,5 +265,13 @@ export default function App() {
       <Analytics />
       <SpeedInsights />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }
