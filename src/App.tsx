@@ -23,7 +23,26 @@ import { ThemeProvider, useTheme } from "./context/ThemeContext";
 
 function AppContent() {
   const { isDark } = useTheme();
-  const [activeTab, setActiveTab] = useState<string>("home");
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash.replace("#", "").toLowerCase();
+      if (
+        [
+          "home",
+          "about",
+          "expertise",
+          "services",
+          "projects",
+          "enquiry",
+          "contact",
+          "admin",
+        ].includes(hash)
+      ) {
+        return hash === "contact" ? "enquiry" : hash;
+      }
+    }
+    return "home";
+  });
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [selectedLeaderId, setSelectedLeaderId] = useState<string | null>(null);
   const [estimatorOpen, setEstimatorOpen] = useState<boolean>(false);
