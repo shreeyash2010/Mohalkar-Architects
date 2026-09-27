@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import {
   BarChart3,
   Users,
@@ -35,7 +35,11 @@ import {
   Calendar,
   DollarSign,
   AlertCircle,
+  ChevronLeft,
   ChevronRight,
+  Menu,
+  PanelLeft,
+  PanelLeftClose,
   HelpCircle,
   RefreshCw,
   ImageIcon,
@@ -1324,6 +1328,140 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     return { totalWorking, totalCompleted, totalPublished };
   }, [workingProjects, publishedProjects]);
 
+  // Mobile Navigation Slidebar Drawer state
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+
+  // Slidebar scroll & drag controls (for PC and mobile)
+  const tabsContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
+  const [canScrollRight, setCanScrollRight] = useState<boolean>(true);
+  const [isDraggingTabs, setIsDraggingTabs] = useState<boolean>(false);
+  const [dragStartX, setDragStartX] = useState<number>(0);
+  const [dragScrollLeft, setDragScrollLeft] = useState<number>(0);
+
+  const checkScrollState = useCallback(() => {
+    const el = tabsContainerRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 6);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 10);
+  }, []);
+
+  useEffect(() => {
+    const el = tabsContainerRef.current;
+    if (!el) return;
+    checkScrollState();
+    el.addEventListener("scroll", checkScrollState, { passive: true });
+    window.addEventListener("resize", checkScrollState);
+    return () => {
+      el.removeEventListener("scroll", checkScrollState);
+      window.removeEventListener("resize", checkScrollState);
+    };
+  }, [checkScrollState]);
+
+  const slideLeft = () => {
+    if (tabsContainerRef.current) {
+      tabsContainerRef.current.scrollBy({ left: -260, behavior: "smooth" });
+    }
+  };
+
+  const slideRight = () => {
+    if (tabsContainerRef.current) {
+      tabsContainerRef.current.scrollBy({ left: 260, behavior: "smooth" });
+    }
+  };
+
+  // PC mouse drag-to-scroll on slidebar
+  const handleTabsMouseDown = (e: React.MouseEvent) => {
+    if (!tabsContainerRef.current) return;
+    setIsDraggingTabs(true);
+    setDragStartX(e.pageX - tabsContainerRef.current.offsetLeft);
+    setDragScrollLeft(tabsContainerRef.current.scrollLeft);
+  };
+
+  const handleTabsMouseLeaveOrUp = () => {
+    setIsDraggingTabs(false);
+  };
+
+  const handleTabsMouseMove = (e: React.MouseEvent) => {
+    if (!isDraggingTabs || !tabsContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - tabsContainerRef.current.offsetLeft;
+    const walk = (x - dragStartX) * 1.5;
+    tabsContainerRef.current.scrollLeft = dragScrollLeft - walk;
+  };
+
+  const handleSelectTab = (tabKey: typeof activeTab) => {
+    setActiveTab(tabKey);
+    setIsMobileMenuOpen(false);
+    setTimeout(() => {
+      const activeEl = tabsContainerRef.current?.querySelector(`[data-tab-key="${tabKey}"]`) as HTMLElement;
+      if (activeEl && tabsContainerRef.current) {
+        activeEl.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }
+    }, 40);
+  };
+
+  const ADMIN_NAV_TABS = useMemo(() => [
+    {
+      id: "projects" as const,
+      label: "Projects & Publishing",
+      shortLabel: "Projects",
+      icon: Layers,
+      count: stats.totalCompleted,
+      countColor: "default",
+      description: "Manage working blueprints & live published portfolio",
+    },
+    {
+      id: "users" as const,
+      label: "Admin Users & Passwords",
+      shortLabel: "Users",
+      icon: Users,
+      count: adminUsers.length,
+      countColor: "gold",
+      description: "Multi-user credentials, roles & permissions",
+    },
+    {
+      id: "insights" as const,
+      label: "Viewer Insights & Analytics",
+      shortLabel: "Analytics",
+      icon: BarChart3,
+      pulse: true,
+      description: "Live traffic trends, popular typologies & city views",
+    },
+    {
+      id: "enquiries" as const,
+      label: "Client Enquiries",
+      shortLabel: "Enquiries",
+      icon: MessageCircle,
+      count: enquiries.filter((e) => e.status === "new").length,
+      countColor: "amber",
+      description: "Direct prospective client enquiries & quotes",
+    },
+    {
+      id: "activity" as const,
+      label: "Recent Activity Feed",
+      shortLabel: "Activity",
+      icon: Activity,
+      count: activities.length,
+      countColor: "gold",
+      description: "Real-time audit log of admin edits and publications",
+    },
+    {
+      id: "properties" as const,
+      label: "Website Properties & Health",
+      shortLabel: "Properties",
+      icon: Globe,
+      description: "SEO tags, meta status, domain and technical health",
+    },
+    {
+      id: "security" as const,
+      label: "Admin Security & Passcode",
+      shortLabel: "Security",
+      icon: KeyRound,
+      description: "Master console passcode and access authentication",
+    },
+  ], [stats.totalCompleted, adminUsers.length, enquiries, activities.length]);
+
   // If not authenticated, show PIN Gate
   if (!isAuthenticated) {
     return (
@@ -1508,13 +1646,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
       {/* ── TOP EXECUTIVE APP BAR ────────────────────── */}
       <header
-        className={`sticky top-0 z-40 backdrop-blur-md border-b px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 transition-colors ${
+        className={`sticky top-0 z-40 backdrop-blur-md border-b px-2.5 sm:px-6 lg:px-8 py-2 sm:py-3 transition-colors ${
           isDark
             ? "bg-[#0e1118]/95 border-[#1e2330]"
             : "bg-white/95 border-[#e2e6ee] shadow-sm"
         }`}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           {/* Studio Brand & Badge */}
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <div
@@ -1527,14 +1665,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div className="min-w-0">
-              <div className="flex items-center gap-1.5 sm:gap-2 truncate">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <span
                   className={`font-serif text-sm sm:text-lg font-bold tracking-wide truncate ${
                     isDark ? "text-white" : "text-neutral-900"
                   }`}
                 >
                   <span className="hidden sm:inline">Mohalkar Executive Console</span>
-                  <span className="sm:hidden">Executive Console</span>
+                  <span className="sm:hidden">Console</span>
                 </span>
                 <span className="px-1.5 py-0.2 rounded-full text-[8px] sm:text-[9px] font-mono font-bold bg-[#c8a96e]/20 text-[#8c6d32] dark:text-[#c8a96e] border border-[#c8a96e]/40 shrink-0">
                   ADMIN
@@ -1550,49 +1688,67 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </div>
           </div>
 
-          {/* Action Tools */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+          {/* Action Tools - Mobile Optimized & No Overlap */}
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             {/* Global Theme Toggler for Admin */}
             <ThemeToggle />
 
-            {/* Quick Add Admin User Button with Distinct Passcode */}
+            {/* Mobile Drawer Trigger (Opens full slidebar drawer on phones) */}
             <button
-              onClick={handleOpenAddUserModal}
-              className="px-2.5 sm:px-3 sm:py-1.5 bg-[#c8a96e]/15 hover:bg-[#c8a96e] text-[#c8a96e] hover:text-[#0c0e12] border border-[#c8a96e]/40 text-xs font-semibold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 shrink-0"
-              title="Add New Admin User with Individual Password"
+              type="button"
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="sm:hidden px-2.5 py-1.5 bg-[#c8a96e]/15 hover:bg-[#c8a96e]/25 text-[#c8a96e] border border-[#c8a96e]/40 text-xs font-semibold rounded-lg flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 shrink-0"
+              title="Open full navigation slidebar and tools"
             >
-              <UserPlus className="w-4 h-4" />
-              <span className="hidden sm:inline">Add Admin User</span>
-              <span className="sm:hidden">Add Admin</span>
+              <Menu className="w-4 h-4" />
+              <span>Menu</span>
             </button>
 
-            <button
-              onClick={() => setIsPasswordModalOpen(true)}
-              className={`p-2 sm:px-3 sm:py-1.5 text-xs font-medium rounded-lg border transition-colors flex items-center gap-1.5 cursor-pointer ${
-                isDark
-                  ? "bg-[#161a24] hover:bg-[#1f2433] text-neutral-300 hover:text-white border-[#252936]"
-                  : "bg-[#f4f6fa] hover:bg-[#e8ecf4] text-neutral-700 hover:text-black border-[#d8dde6] shadow-sm"
-              }`}
-              title="Change Studio Administration Passcode"
-            >
-              <KeyRound className="w-4 h-4 text-[#c8a96e]" />
-              <span className="hidden md:inline">Change Passcode</span>
-            </button>
+            {/* Desktop Action Buttons */}
+            <div className="hidden sm:flex items-center gap-1.5 lg:gap-2.5">
+              <button
+                type="button"
+                onClick={handleOpenAddUserModal}
+                className="px-2.5 sm:px-3 sm:py-1.5 bg-[#c8a96e]/15 hover:bg-[#c8a96e] text-[#c8a96e] hover:text-[#0c0e12] border border-[#c8a96e]/40 text-xs font-semibold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 shrink-0"
+                title="Add New Admin User with Individual Password"
+              >
+                <UserPlus className="w-4 h-4" />
+                <span className="hidden md:inline">Add Admin User</span>
+                <span className="md:hidden">Add User</span>
+              </button>
 
-            <button
-              onClick={onNavigateToProjects}
-              className={`p-2 sm:px-3 sm:py-1.5 text-xs font-medium rounded-lg border transition-colors flex items-center gap-1.5 cursor-pointer ${
-                isDark
-                  ? "bg-[#161a24] hover:bg-[#1f2433] text-neutral-300 hover:text-white border-[#252936]"
-                  : "bg-[#f4f6fa] hover:bg-[#e8ecf4] text-neutral-700 hover:text-black border-[#d8dde6] shadow-sm"
-              }`}
-              title="Preview public projects grid"
-            >
-              <ExternalLink className="w-4 h-4 text-[#c8a96e]" />
-              <span className="hidden md:inline">Live Projects</span>
-            </button>
+              <button
+                type="button"
+                onClick={() => setIsPasswordModalOpen(true)}
+                className={`p-2 sm:px-3 sm:py-1.5 text-xs font-medium rounded-lg border transition-colors flex items-center gap-1.5 cursor-pointer ${
+                  isDark
+                    ? "bg-[#161a24] hover:bg-[#1f2433] text-neutral-300 hover:text-white border-[#252936]"
+                    : "bg-[#f4f6fa] hover:bg-[#e8ecf4] text-neutral-700 hover:text-black border-[#d8dde6] shadow-sm"
+                }`}
+                title="Change Studio Administration Passcode"
+              >
+                <KeyRound className="w-4 h-4 text-[#c8a96e]" />
+                <span className="hidden md:inline">Passcode</span>
+              </button>
 
+              <button
+                type="button"
+                onClick={onNavigateToProjects}
+                className={`p-2 sm:px-3 sm:py-1.5 text-xs font-medium rounded-lg border transition-colors flex items-center gap-1.5 cursor-pointer ${
+                  isDark
+                    ? "bg-[#161a24] hover:bg-[#1f2433] text-neutral-300 hover:text-white border-[#252936]"
+                    : "bg-[#f4f6fa] hover:bg-[#e8ecf4] text-neutral-700 hover:text-black border-[#d8dde6] shadow-sm"
+                }`}
+                title="Preview public projects grid"
+              >
+                <ExternalLink className="w-4 h-4 text-[#c8a96e]" />
+                <span className="hidden md:inline">Live Site</span>
+              </button>
+            </div>
+
+            {/* Exit Console Button */}
             <button
+              type="button"
               onClick={onExit}
               className="px-2.5 sm:px-3.5 py-1.5 bg-[#c8a96e] hover:bg-[#dfc085] text-[#0c0e12] text-xs font-semibold rounded-lg transition-colors flex items-center gap-1 cursor-pointer shadow-sm active:scale-95 shrink-0"
               title="Return to website homepage"
@@ -1602,7 +1758,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <ArrowUpRight className="w-3.5 h-3.5" />
             </button>
 
+            {/* Logout Button */}
             <button
+              type="button"
               onClick={handleLogout}
               className={`p-2 sm:p-1.5 rounded-lg transition-colors cursor-pointer shrink-0 ${
                 isDark
@@ -1616,144 +1774,274 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </div>
         </div>
 
-        {/* Console Navigation Tabs */}
-        <div className="max-w-7xl mx-auto pt-2.5 sm:pt-3 flex items-center gap-2 sm:gap-4 overflow-x-auto scrollbar-none text-xs -mx-3 px-3 sm:mx-0 sm:px-0">
-          <button
-            onClick={() => setActiveTab("projects")}
-            className={`pb-2 px-1.5 sm:px-1 border-b-2 font-medium transition-colors flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
-              activeTab === "projects"
-                ? "border-[#c8a96e] text-[#c8a96e] font-semibold"
-                : isDark
-                ? "border-transparent text-neutral-400 hover:text-white"
-                : "border-transparent text-neutral-600 hover:text-neutral-900"
-            }`}
-          >
-            <Layers className="w-4 h-4" />
-            <span className="hidden sm:inline">Projects &amp; Publishing</span>
-            <span className="sm:hidden">Projects</span>
-            <span
-              className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${
-                isDark
-                  ? "bg-[#1b202c] text-neutral-300"
-                  : "bg-[#eef2f8] text-neutral-700"
+        {/* ── CONSOLE NAVIGATION SLIDEBAR (PC & MOBILE SLIDER) ── */}
+        <div className="max-w-7xl mx-auto pt-2 sm:pt-3">
+          <div className="relative flex items-center">
+            {/* Left Slide Arrow Button */}
+            <button
+              type="button"
+              onClick={slideLeft}
+              disabled={!canScrollLeft}
+              className={`p-1.5 sm:p-2 rounded-lg border transition-all shrink-0 mr-1 sm:mr-2 cursor-pointer flex items-center justify-center ${
+                canScrollLeft
+                  ? isDark
+                    ? "bg-[#181d28] hover:bg-[#222838] text-[#c8a96e] border-[#c8a96e]/40 shadow-sm"
+                    : "bg-white hover:bg-[#f0f4fa] text-[#8c6d32] border-[#c8a96e]/50 shadow-sm"
+                  : isDark
+                  ? "bg-[#12151e] text-neutral-600 border-[#1f2432] opacity-30 cursor-not-allowed"
+                  : "bg-neutral-100 text-neutral-400 border-neutral-200 opacity-30 cursor-not-allowed"
+              }`}
+              title="Slide Left (Scroll tabs left)"
+              aria-label="Slide Left"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            {/* Scrollable Slidebar Track */}
+            <div
+              ref={tabsContainerRef}
+              onMouseDown={handleTabsMouseDown}
+              onMouseUp={handleTabsMouseLeaveOrUp}
+              onMouseLeave={handleTabsMouseLeaveOrUp}
+              onMouseMove={handleTabsMouseMove}
+              className={`flex-1 flex items-center gap-1.5 sm:gap-3 overflow-x-auto scroll-smooth scrollbar-none text-xs select-none py-0.5 ${
+                isDraggingTabs ? "cursor-grabbing" : "cursor-grab"
               }`}
             >
-              {stats.totalCompleted}
-            </span>
-          </button>
+              {ADMIN_NAV_TABS.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    data-tab-key={tab.id}
+                    type="button"
+                    onClick={() => handleSelectTab(tab.id)}
+                    className={`pb-2 pt-1.5 px-2.5 sm:px-3 border-b-2 font-medium transition-all flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer shrink-0 rounded-t-lg ${
+                      isActive
+                        ? "border-[#c8a96e] text-[#c8a96e] font-semibold bg-[#c8a96e]/10"
+                        : isDark
+                        ? "border-transparent text-neutral-400 hover:text-white hover:bg-white/[0.03]"
+                        : "border-transparent text-neutral-600 hover:text-neutral-900 hover:bg-black/[0.03]"
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#c8a96e]" : ""}`} />
+                    <span className="hidden sm:inline">{tab.label}</span>
+                    <span className="sm:hidden">{tab.shortLabel}</span>
+                    {tab.pulse && (
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                    )}
+                    {tab.count !== undefined && (
+                      <span
+                        className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono shrink-0 border ${
+                          tab.countColor === "amber"
+                            ? "bg-amber-500/20 text-amber-600 dark:text-amber-300 border-amber-500/30 font-bold"
+                            : tab.countColor === "gold"
+                            ? isDark
+                              ? "bg-[#1b202c] text-[#c8a96e] border-[#c8a96e]/30 font-semibold"
+                              : "bg-[#fef8ee] text-[#8c6d32] border-[#c8a96e]/40 font-semibold"
+                            : isDark
+                            ? "bg-[#1b202c] text-neutral-300 border-[#2a3040]"
+                            : "bg-[#eef2f8] text-neutral-700 border-neutral-300"
+                        }`}
+                      >
+                        {tab.count}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
 
-          <button
-            onClick={() => setActiveTab("users")}
-            className={`pb-2 px-1.5 sm:px-1 border-b-2 font-medium transition-colors flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
-              activeTab === "users"
-                ? "border-[#c8a96e] text-[#c8a96e] font-semibold"
-                : isDark
-                ? "border-transparent text-neutral-400 hover:text-white"
-                : "border-transparent text-neutral-600 hover:text-neutral-900"
-            }`}
-          >
-            <Users className="w-4 h-4" />
-            <span className="hidden sm:inline">Admin Users &amp; Passwords</span>
-            <span className="sm:hidden">Users</span>
-            <span
-              className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono border ${
-                isDark
-                  ? "bg-[#1b202c] text-[#c8a96e] border-[#c8a96e]/30"
-                  : "bg-[#fef8ee] text-[#8c6d32] border-[#c8a96e]/40"
+            {/* Right Slide Arrow Button */}
+            <button
+              type="button"
+              onClick={slideRight}
+              disabled={!canScrollRight}
+              className={`p-1.5 sm:p-2 rounded-lg border transition-all shrink-0 ml-1 sm:ml-2 cursor-pointer flex items-center justify-center ${
+                canScrollRight
+                  ? isDark
+                    ? "bg-[#181d28] hover:bg-[#222838] text-[#c8a96e] border-[#c8a96e]/40 shadow-sm"
+                    : "bg-white hover:bg-[#f0f4fa] text-[#8c6d32] border-[#c8a96e]/50 shadow-sm"
+                  : isDark
+                  ? "bg-[#12151e] text-neutral-600 border-[#1f2432] opacity-30 cursor-not-allowed"
+                  : "bg-neutral-100 text-neutral-400 border-neutral-200 opacity-30 cursor-not-allowed"
               }`}
+              title="Slide Right (Scroll tabs right)"
+              aria-label="Slide Right"
             >
-              {adminUsers.length}
-            </span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("insights")}
-            className={`pb-2 px-1.5 sm:px-1 border-b-2 font-medium transition-colors flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
-              activeTab === "insights"
-                ? "border-[#c8a96e] text-[#c8a96e] font-semibold"
-                : isDark
-                ? "border-transparent text-neutral-400 hover:text-white"
-                : "border-transparent text-neutral-600 hover:text-neutral-900"
-            }`}
-          >
-            <BarChart3 className="w-4 h-4" />
-            <span className="hidden sm:inline">Viewer Insights &amp; Analytics</span>
-            <span className="sm:hidden">Analytics</span>
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          </button>
-
-          <button
-            onClick={() => setActiveTab("enquiries")}
-            className={`pb-2 px-1.5 sm:px-1 border-b-2 font-medium transition-colors flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
-              activeTab === "enquiries"
-                ? "border-[#c8a96e] text-[#c8a96e] font-semibold"
-                : isDark
-                ? "border-transparent text-neutral-400 hover:text-white"
-                : "border-transparent text-neutral-600 hover:text-neutral-900"
-            }`}
-          >
-            <MessageCircle className="w-4 h-4" />
-            <span className="hidden sm:inline">Client Enquiries</span>
-            <span className="sm:hidden">Enquiries</span>
-            <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-300 text-[10px] font-mono">
-              {enquiries.filter((e) => e.status === "new").length}
-            </span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("activity")}
-            className={`pb-2 px-1.5 sm:px-1 border-b-2 font-medium transition-colors flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
-              activeTab === "activity"
-                ? "border-[#c8a96e] text-[#c8a96e] font-semibold"
-                : isDark
-                ? "border-transparent text-neutral-400 hover:text-white"
-                : "border-transparent text-neutral-600 hover:text-neutral-900"
-            }`}
-          >
-            <Activity className="w-4 h-4" />
-            <span className="hidden sm:inline">Recent Activity Feed</span>
-            <span className="sm:hidden">Activity</span>
-            <span
-              className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono border ${
-                isDark
-                  ? "bg-[#1b202c] text-[#c8a96e] border-[#c8a96e]/30"
-                  : "bg-[#fef8ee] text-[#8c6d32] border-[#c8a96e]/40"
-              }`}
-            >
-              {activities.length}
-            </span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("properties")}
-            className={`pb-2 px-1.5 sm:px-1 border-b-2 font-medium transition-colors flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
-              activeTab === "properties"
-                ? "border-[#c8a96e] text-[#c8a96e] font-semibold"
-                : isDark
-                ? "border-transparent text-neutral-400 hover:text-white"
-                : "border-transparent text-neutral-600 hover:text-neutral-900"
-            }`}
-          >
-            <Globe className="w-4 h-4" />
-            <span className="hidden sm:inline">Website Properties &amp; Health</span>
-            <span className="sm:hidden">Properties</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("security")}
-            className={`pb-2 px-1.5 sm:px-1 border-b-2 font-medium transition-colors flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
-              activeTab === "security"
-                ? "border-[#c8a96e] text-[#c8a96e] font-semibold"
-                : isDark
-                ? "border-transparent text-neutral-400 hover:text-white"
-                : "border-transparent text-neutral-600 hover:text-neutral-900"
-            }`}
-          >
-            <KeyRound className="w-4 h-4" />
-            <span className="hidden sm:inline">Admin Security &amp; Passcode</span>
-            <span className="sm:hidden">Security</span>
-          </button>
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
+
+        {/* ── MOBILE SLIDEBAR DRAWER OVERLAY ── */}
+        {isMobileMenuOpen && (
+          <div className="fixed inset-0 z-50 sm:hidden">
+            {/* Backdrop */}
+            <div
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
+            />
+
+            {/* Slide-out Drawer Panel */}
+            <div
+              className={`absolute top-0 right-0 w-full max-w-sm h-full shadow-2xl p-5 overflow-y-auto flex flex-col justify-between border-l transition-colors ${
+                isDark
+                  ? "bg-[#0f121a] border-[#222736] text-white"
+                  : "bg-white border-[#d8dde6] text-neutral-900"
+              }`}
+            >
+              <div className="space-y-5">
+                {/* Drawer Header */}
+                <div className="flex items-center justify-between pb-3 border-b border-[#222736]/40">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-[#c8a96e]/20 border border-[#c8a96e]/50 flex items-center justify-center text-[#c8a96e]">
+                      <Settings className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h3 className="font-serif font-bold text-sm">Navigation &amp; Controls</h3>
+                      <p className="text-[10px] text-neutral-400">Mohalkar Architects Console</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="p-1.5 rounded-lg border border-neutral-700/50 hover:bg-neutral-800 text-neutral-400 hover:text-white"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Tabs List */}
+                <div className="space-y-1.5">
+                  <p className="text-[11px] font-mono text-[#c8a96e] uppercase tracking-wider px-1">
+                    Console Sections
+                  </p>
+                  {ADMIN_NAV_TABS.map((tab) => {
+                    const Icon = tab.icon;
+                    const isActive = activeTab === tab.id;
+                    return (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => handleSelectTab(tab.id)}
+                        className={`w-full p-3 rounded-xl border text-left transition-all flex items-center justify-between gap-3 cursor-pointer ${
+                          isActive
+                            ? "bg-[#c8a96e]/15 border-[#c8a96e] text-[#c8a96e] shadow-sm font-semibold"
+                            : isDark
+                            ? "bg-[#141824] hover:bg-[#1a1f2e] border-[#222736] text-neutral-300"
+                            : "bg-[#f8f9fc] hover:bg-[#edf1f8] border-[#e2e6ef] text-neutral-800"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+                              isActive
+                                ? "bg-[#c8a96e] text-[#0c0e12]"
+                                : isDark
+                                ? "bg-[#1e2332] text-neutral-400"
+                                : "bg-neutral-200 text-neutral-700"
+                            }`}
+                          >
+                            <Icon className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs truncate">{tab.label}</p>
+                            <p className="text-[10px] text-neutral-400 truncate">
+                              {tab.description}
+                            </p>
+                          </div>
+                        </div>
+
+                        {tab.count !== undefined && (
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-mono shrink-0 ${
+                              isActive
+                                ? "bg-[#c8a96e] text-[#0c0e12] font-bold"
+                                : isDark
+                                ? "bg-[#1f2434] text-neutral-300"
+                                : "bg-[#e5ebf4] text-neutral-700"
+                            }`}
+                          >
+                            {tab.count}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Drawer Quick Actions Footer */}
+              <div className="pt-4 border-t border-[#222736]/40 space-y-2">
+                <p className="text-[11px] font-mono text-[#c8a96e] uppercase tracking-wider px-1">
+                  Quick Actions
+                </p>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      handleOpenAddUserModal();
+                    }}
+                    className="p-2.5 rounded-lg border border-[#c8a96e]/30 bg-[#c8a96e]/10 text-[#c8a96e] text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <UserPlus className="w-3.5 h-3.5" />
+                    <span>Add Admin</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setIsPasswordModalOpen(true);
+                    }}
+                    className={`p-2.5 rounded-lg border text-xs font-medium flex items-center justify-center gap-1.5 cursor-pointer ${
+                      isDark
+                        ? "bg-[#161a24] border-[#252936] text-neutral-300"
+                        : "bg-[#f4f6fa] border-[#d8dde6] text-neutral-800"
+                    }`}
+                  >
+                    <KeyRound className="w-3.5 h-3.5 text-[#c8a96e]" />
+                    <span>Passcode</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      onNavigateToProjects();
+                    }}
+                    className={`p-2.5 rounded-lg border text-xs font-medium flex items-center justify-center gap-1.5 cursor-pointer ${
+                      isDark
+                        ? "bg-[#161a24] border-[#252936] text-neutral-300"
+                        : "bg-[#f4f6fa] border-[#d8dde6] text-neutral-800"
+                    }`}
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 text-[#c8a96e]" />
+                    <span>Live Site</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      handleLogout();
+                    }}
+                    className="p-2.5 rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-400 text-xs font-medium flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Lock className="w-3.5 h-3.5" />
+                    <span>Lock Console</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* ── MAIN CONSOLE CONTENT ───────────────────── */}
