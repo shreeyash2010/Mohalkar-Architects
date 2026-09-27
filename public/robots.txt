@@ -1,0 +1,7 @@
+# Robots.txt for Mohalkar Architects & Planners
+User-agent: *
+Allow: /
+Disallow: /admin
+
+# Canonical XML Sitemap
+Sitemap: https://mohalkar-architects-planners-a25s.vercel.app/sitemap.xml

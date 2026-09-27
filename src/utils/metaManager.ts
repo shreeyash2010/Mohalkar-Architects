@@ -19,7 +19,7 @@ export const TAB_META_CONFIGS: Record<string, TabMetaData> = {
       "Premier architectural studio and urban planning consultancy in Pune & Maharashtra specializing in bespoke residential, commercial, interior, and landscape design.",
     keywords:
       "Mohalkar Architects, architecture firm Pune, luxury villa architects, urban planners Maharashtra, architectural consultancy India",
-    canonicalPath: "/#home",
+    canonicalPath: "/",
     ogImage: "/images/hero1.jpg",
     pageType: "website",
   },
@@ -29,7 +29,7 @@ export const TAB_META_CONFIGS: Record<string, TabMetaData> = {
       "Explore our portfolio of completed and ongoing architectural projects, luxury bungalows, commercial complexes, and urban landscapes across India.",
     keywords:
       "architecture projects, luxury villa designs, Pune architects portfolio, commercial architecture, architectural drawings, landscape design portfolio",
-    canonicalPath: "/#projects",
+    canonicalPath: "/projects",
     ogImage: "/images/project1.png",
     pageType: "collection",
   },
@@ -39,7 +39,7 @@ export const TAB_META_CONFIGS: Record<string, TabMetaData> = {
       "Learn about Mohalkar Architects & Planners, our design philosophy, Council of Architecture credentials, and leadership under Founder Abhishek Mohalkar.",
     keywords:
       "About Mohalkar Architects, Abhishek Mohalkar architect, Council of Architecture India, architectural ethos, sustainable architecture Pune",
-    canonicalPath: "/#about",
+    canonicalPath: "/about",
     ogImage: "/images/ceo.png",
     pageType: "about",
   },
@@ -49,7 +49,7 @@ export const TAB_META_CONFIGS: Record<string, TabMetaData> = {
       "Discover our core architectural typologies: luxury residential villas, commercial plazas, master landscape planning, interior design, and municipal sanctions.",
     keywords:
       "architectural typologies, residential bungalow design, commercial planning, landscape master plan, architectural sanctioned drawings",
-    canonicalPath: "/#expertise",
+    canonicalPath: "/expertise",
     ogImage: "/images/services.jpg",
     pageType: "article",
   },
@@ -59,7 +59,7 @@ export const TAB_META_CONFIGS: Record<string, TabMetaData> = {
       "End-to-end architectural solutions: concept master plans, high-precision working blueprints, 3D visualization, site supervision, and turnkey execution.",
     keywords:
       "architectural services Pune, 3D architectural rendering, working drawings, municipal sanction approvals, turnkey construction architecture",
-    canonicalPath: "/#services",
+    canonicalPath: "/services",
     ogImage: "/images/architecture.jpg",
     pageType: "service",
   },
@@ -69,7 +69,7 @@ export const TAB_META_CONFIGS: Record<string, TabMetaData> = {
       "Connect with Mohalkar Architects & Planners. Schedule a private architectural consultation or request a custom project cost estimate in Pune and Dharashiv.",
     keywords:
       "hire architect Pune, architectural consultation, architecture cost estimate, Mohalkar office contact, architect Dharashiv Bhoom",
-    canonicalPath: "/#enquiry",
+    canonicalPath: "/enquiry",
     ogImage: "/images/logo2.png",
     pageType: "contact",
   },
@@ -79,7 +79,7 @@ export const TAB_META_CONFIGS: Record<string, TabMetaData> = {
       "Connect with Mohalkar Architects & Planners. Schedule a private architectural consultation or request a custom project cost estimate in Pune and Dharashiv.",
     keywords:
       "hire architect Pune, architectural consultation, architecture cost estimate, Mohalkar office contact, architect Dharashiv Bhoom",
-    canonicalPath: "/#contact",
+    canonicalPath: "/enquiry",
     ogImage: "/images/logo2.png",
     pageType: "contact",
   },
@@ -88,7 +88,7 @@ export const TAB_META_CONFIGS: Record<string, TabMetaData> = {
     description:
       "Secure executive management console for Mohalkar Architects & Planners: portfolio pipeline, client CRM leads, telemetry analytics, and site health.",
     keywords: "Mohalkar studio admin, executive architecture console, project management",
-    canonicalPath: "/#admin",
+    canonicalPath: "/admin",
     ogImage: "/images/logo2.png",
     pageType: "admin",
   },
@@ -131,8 +131,8 @@ export function getActiveMeta(context: ActiveMetaContext): TabMetaData & { canon
       title: `${selectedProject.title} | Mohalkar Architects & Planners`,
       description: trimmedDesc,
       keywords: `${selectedProject.title}, ${selectedProject.category} architecture, ${selectedProject.location || "Pune"}, Mohalkar projects`,
-      canonicalPath: `/#projects?id=${encodeURIComponent(selectedProject.id)}`,
-      canonicalUrl: `${baseUrl}/#projects?id=${encodeURIComponent(selectedProject.id)}`,
+      canonicalPath: `/projects?id=${encodeURIComponent(selectedProject.id)}`,
+      canonicalUrl: `${baseUrl}/projects?id=${encodeURIComponent(selectedProject.id)}`,
       ogImage: selectedProject.image || "/images/project1.png",
       pageType: "article",
     };
@@ -147,8 +147,8 @@ export function getActiveMeta(context: ActiveMetaContext): TabMetaData & { canon
       title: `${selectedLeader.name} — Leadership | Mohalkar Architects & Planners`,
       description: trimmedDesc,
       keywords: `${selectedLeader.name}, architect leadership, Mohalkar Architects, ${selectedLeader.role}`,
-      canonicalPath: `/#about?leader=${encodeURIComponent(selectedLeader.id)}`,
-      canonicalUrl: `${baseUrl}/#about?leader=${encodeURIComponent(selectedLeader.id)}`,
+      canonicalPath: `/about?leader=${encodeURIComponent(selectedLeader.id)}`,
+      canonicalUrl: `${baseUrl}/about?leader=${encodeURIComponent(selectedLeader.id)}`,
       ogImage: selectedLeader.photo || "/images/ceo.png",
       pageType: "profile",
     };

@@ -25,7 +25,9 @@ function AppContent() {
   const { isDark } = useTheme();
   const [activeTab, setActiveTab] = useState<string>(() => {
     if (typeof window !== "undefined") {
+      const path = window.location.pathname.replace(/^\/|\/$/g, "").toLowerCase();
       const hash = window.location.hash.replace("#", "").toLowerCase();
+      const candidate = path || hash;
       if (
         [
           "home",
@@ -36,9 +38,9 @@ function AppContent() {
           "enquiry",
           "contact",
           "admin",
-        ].includes(hash)
+        ].includes(candidate)
       ) {
-        return hash === "contact" ? "enquiry" : hash;
+        return candidate === "contact" ? "enquiry" : candidate;
       }
     }
     return "home";
@@ -72,10 +74,12 @@ function AppContent() {
     }
   }, [activeTab]);
 
-  // Sync hash with activeTab
+  // Sync URL changes (both browser forward/back popstate and legacy hashchange)
   useEffect(() => {
-    const handleHashChange = () => {
+    const handleUrlChange = () => {
+      const path = window.location.pathname.replace(/^\/|\/$/g, "").toLowerCase();
       const hash = window.location.hash.replace("#", "").toLowerCase();
+      const candidate = path || hash;
       if (
         [
           "home",
@@ -86,15 +90,20 @@ function AppContent() {
           "enquiry",
           "contact",
           "admin",
-        ].includes(hash)
+        ].includes(candidate)
       ) {
-        setActiveTab(hash === "contact" ? "enquiry" : hash);
+        setActiveTab(candidate === "contact" ? "enquiry" : candidate);
+      } else if (!candidate) {
+        setActiveTab("home");
       }
     };
 
-    handleHashChange();
-    window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
+    window.addEventListener("popstate", handleUrlChange);
+    window.addEventListener("hashchange", handleUrlChange);
+    return () => {
+      window.removeEventListener("popstate", handleUrlChange);
+      window.removeEventListener("hashchange", handleUrlChange);
+    };
   }, []);
 
   // Keyboard shortcut for studio admin: Ctrl + Shift + A (or Cmd + Shift + A)
@@ -111,7 +120,10 @@ function AppContent() {
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
-    window.location.hash = tab;
+    const targetUrl = tab === "home" ? "/" : `/${tab}`;
+    if (typeof window !== "undefined" && window.location.pathname !== targetUrl) {
+      window.history.pushState(null, "", targetUrl);
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
