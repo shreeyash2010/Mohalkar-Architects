@@ -347,4 +347,25 @@ export const downloadProjectBlueprint = downloadSampleBlueprint;
 export const generateBlueprint = downloadSampleBlueprint;
 export const downloadBlueprint = downloadSampleBlueprint;
 
+export async function generateCostEstimatePdf(estimateData?: any): Promise<boolean> {
+  try {
+    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    doc.setFillColor(11, 17, 30);
+    doc.rect(0, 0, 210, 297, "F");
+    doc.setTextColor(200, 169, 110);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text("MOHALKAR ARCHITECTS & PLANNERS", 15, 20);
+    doc.setFontSize(11);
+    doc.setTextColor(255, 255, 255);
+    doc.text("Architectural Project Cost Estimate Summary", 15, 28);
+    doc.save("Mohalkar_Architects_Cost_Estimate.pdf");
+    return true;
+  } catch (e) {
+    console.error("Failed to generate cost estimate PDF", e);
+    return false;
+  }
+}
+export const downloadCostEstimatePdf = generateCostEstimatePdf;
+
 export default downloadSampleBlueprint;
