@@ -342,4 +342,9 @@ export async function downloadSampleBlueprint(
   }
 }
 
+export const generateProjectPdf = downloadSampleBlueprint;
+export const downloadProjectBlueprint = downloadSampleBlueprint;
+export const generateBlueprint = downloadSampleBlueprint;
+export const downloadBlueprint = downloadSampleBlueprint;
+
 export default downloadSampleBlueprint;
