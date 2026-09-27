@@ -491,4 +491,18 @@ export const expertise = EXPERTISE_DOMAINS;
 export const studioInfo = SITE_INFO;
 export const siteInfo = SITE_INFO;
 export const siteData = SITE_INFO;
+
+export const studioContact = SITE_INFO.contacts;
+export const contactInfo = SITE_INFO.contacts;
+export const contacts = SITE_INFO.contacts;
+export const CONTACTS = SITE_INFO.contacts;
+
+export const studioStats = SITE_INFO.stats;
+export const stats = SITE_INFO.stats;
+export const STATS = SITE_INFO.stats;
+
+export const studioPartners = SITE_INFO.partners;
+export const partners = SITE_INFO.partners;
+export const PARTNERS = SITE_INFO.partners;
+
 export default SITE_INFO;
