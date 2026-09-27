@@ -18,9 +18,9 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
   const { isDark } = useTheme();
 
   return (
-    <div className="space-y-24 sm:space-y-32">
+    <div className="space-y-14 sm:space-y-20">
       {/* ── HERO SECTION ──────────────────────────── */}
-      <section className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-blueprint-grid">
+      <section className="relative pt-24 sm:pt-28 pb-8 sm:pb-10 px-4 sm:px-6 lg:px-8 overflow-hidden bg-blueprint-grid">
         {/* Soft architectural glow */}
         <div
           className={`absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[140px] pointer-events-none ${
@@ -95,7 +95,7 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
 
           {/* Key Quantitative Stats */}
           <div
-            className={`mt-16 pt-10 border-t grid grid-cols-2 md:grid-cols-4 gap-6 ${
+            className={`mt-12 sm:mt-14 pt-8 sm:pt-10 border-t grid grid-cols-2 md:grid-cols-4 gap-6 ${
               isDark ? "border-[#1e232d]" : "border-[#e5e9f0]"
             }`}
           >

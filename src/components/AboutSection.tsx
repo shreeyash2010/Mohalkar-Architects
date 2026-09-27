@@ -21,7 +21,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
   const handleSelectLeader = onSelectLeader || onOpenLeadershipModal || (() => {});
 
   return (
-    <div className="space-y-24 sm:space-y-32">
+    <div className="space-y-16 sm:space-y-24">
       {/* ── ABOUT PAGE HERO ───────────────────────── */}
       <section
         className={`relative pt-28 pb-16 px-4 sm:px-6 lg:px-8 border-b bg-blueprint-grid ${
