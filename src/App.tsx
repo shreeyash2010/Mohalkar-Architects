@@ -21,9 +21,14 @@ import { getPublishedProjects, recordPageView } from "./utils/projectStorage";
 import { LEADERSHIP_PROFILES, SITE_INFO } from "./data/siteData";
 import { MetaTagManager } from "./components/MetaTagManager";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
+import { useImagePreloader } from "./hooks/useImagePreloader";
 
 function AppContent() {
   const { isDark } = useTheme();
+
+  // Preload critical hero banners, logos, and typologies on initial applet mount
+  useImagePreloader();
+
   const [activeTab, setActiveTab] = useState<string>(() => {
     if (typeof window !== "undefined") {
       const path = window.location.pathname.replace(/^\/|\/$/g, "").toLowerCase();
