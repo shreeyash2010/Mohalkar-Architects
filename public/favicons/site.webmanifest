@@ -1,0 +1,21 @@
+{
+  "name": "Mohalkar Architects & Planners",
+  "short_name": "Mohalkar Architects",
+  "description": "Premier architectural studio & urban planning consultancy specializing in residential, commercial, interior, and urban planning across India.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c0e12",
+  "theme_color": "#c8a96e",
+  "icons": [
+    {
+      "src": "/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
