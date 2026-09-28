@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MessageCircle, X, ArrowUpRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Navbar } from "./components/Navbar";
@@ -172,43 +173,53 @@ function AppContent() {
 
       {/* Main View Router */}
       <main className="flex-1 pb-24 sm:pb-28 lg:pb-16">
-        {activeTab === "home" && (
-          <HomeSection
-            setActiveTab={handleTabChange}
-            onSelectLeader={setSelectedLeaderId}
-            onOpenEstimator={() => setEstimatorOpen(true)}
-          />
-        )}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+          >
+            {activeTab === "home" && (
+              <HomeSection
+                setActiveTab={handleTabChange}
+                onSelectLeader={setSelectedLeaderId}
+                onOpenEstimator={() => setEstimatorOpen(true)}
+              />
+            )}
 
-        {activeTab === "about" && (
-          <AboutSection
-            setActiveTab={handleTabChange}
-            onSelectLeader={setSelectedLeaderId}
-          />
-        )}
+            {activeTab === "about" && (
+              <AboutSection
+                setActiveTab={handleTabChange}
+                onSelectLeader={setSelectedLeaderId}
+              />
+            )}
 
-        {activeTab === "expertise" && (
-          <ExpertiseSection
-            setActiveTab={handleTabChange}
-            onOpenEstimator={() => setEstimatorOpen(true)}
-          />
-        )}
+            {activeTab === "expertise" && (
+              <ExpertiseSection
+                setActiveTab={handleTabChange}
+                onOpenEstimator={() => setEstimatorOpen(true)}
+              />
+            )}
 
-        {activeTab === "services" && (
-          <ServicesSection setActiveTab={handleTabChange} />
-        )}
+            {activeTab === "services" && (
+              <ServicesSection setActiveTab={handleTabChange} />
+            )}
 
-        {activeTab === "projects" && (
-          <ProjectsSection
-            setActiveTab={handleTabChange}
-            onSelectProject={setSelectedProject}
-            projects={publishedProjects}
-          />
-        )}
+            {activeTab === "projects" && (
+              <ProjectsSection
+                setActiveTab={handleTabChange}
+                onSelectProject={setSelectedProject}
+                projects={publishedProjects}
+              />
+            )}
 
-        {activeTab === "enquiry" && (
-          <EnquirySection initialEstimate={appliedEstimate} />
-        )}
+            {activeTab === "enquiry" && (
+              <EnquirySection initialEstimate={appliedEstimate} />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* Persistent Footer with discreet Admin Portal trigger */}

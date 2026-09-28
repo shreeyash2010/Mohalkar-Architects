@@ -42,16 +42,16 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent ${
           isHeroTransparent
-            ? "bg-gradient-to-b from-black/75 via-black/40 to-transparent py-4 sm:py-5 border-b border-transparent"
+            ? "bg-gradient-to-b from-black/75 via-black/40 to-transparent py-4 sm:py-5"
             : scrolled
             ? isDark
-              ? "bg-[#0c0e12]/92 backdrop-blur-md border-b border-[#252830] py-3.5 shadow-2xl"
-              : "bg-[#ffffff]/96 backdrop-blur-md border-b border-black/[0.07] py-3.5 shadow-sm"
+              ? "bg-[#0c0e12]/92 backdrop-blur-md py-3.5 shadow-2xl"
+              : "bg-[#ffffff]/96 backdrop-blur-md py-3.5 shadow-sm"
             : isDark
-            ? "bg-gradient-to-b from-[#0c0e12]/90 to-transparent py-4 border-b border-[#252830]/40"
-            : "bg-[#ffffff]/96 backdrop-blur-md border-b border-black/[0.07] py-4 shadow-xs"
+            ? "bg-gradient-to-b from-[#0c0e12]/90 to-transparent py-4"
+            : "bg-[#ffffff]/96 backdrop-blur-md py-4 shadow-xs"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

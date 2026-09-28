@@ -26,6 +26,8 @@
     scroll-behavior: smooth;
     width: 100%;
     overflow-x: hidden;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE & Edge */
   }
 
   body {
@@ -35,6 +37,8 @@
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE & Edge */
     transition: background-color var(--transition), color var(--transition);
   }
 
@@ -51,20 +55,20 @@
     font-family: var(--font-mono);
   }
 
-  /* ── SCROLLBAR (Reference site exact styles) ── */
+  /* ── REMOVE / HIDE SCROLLBAR (SLIDE BAR) ── */
+  html,
+  body,
+  * {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  *::-webkit-scrollbar,
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--dark);
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--gold);
-    border-radius: 3px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--gold-dark);
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
   }
 }
 
