@@ -28,14 +28,16 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
           {/* Col 1: Brand & Philosophy */}
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center gap-3">
-              <img
-                src="/images/logo2.png"
-                alt="Mohalkar Logo"
-                className="w-11 h-11 object-contain border border-[#c8a96e]/40 rounded-[4px] p-0.5 bg-black/40 shadow-sm"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = "/images/logo.jpg";
-                }}
-              />
+              <div className="relative group">
+                <img
+                  src="/images/logo2.png"
+                  alt="Mohalkar Logo"
+                  className="w-11 h-11 object-contain border border-[#c8a96e]/40 rounded-[4px] p-0.5 bg-black/40 shadow-sm"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = "/images/logo.jpg";
+                  }}
+                />
+              </div>
               <div>
                 <span className="font-serif text-2xl font-bold tracking-[3px] text-[#c8a96e]">
                   MOHALKAR

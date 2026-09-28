@@ -169,7 +169,10 @@ function AppContent() {
       />
 
       {/* Persistent 3-Zone Navbar with Light/Dark Mode Toggler */}
-      <Navbar activeTab={activeTab} setActiveTab={handleTabChange} />
+      <Navbar
+        activeTab={activeTab}
+        setActiveTab={handleTabChange}
+      />
 
       {/* Main View Router */}
       <main className="flex-1 pb-24 sm:pb-28 lg:pb-16">
@@ -223,7 +226,9 @@ function AppContent() {
       </main>
 
       {/* Persistent Footer with discreet Admin Portal trigger */}
-      <Footer setActiveTab={handleTabChange} />
+      <Footer
+        setActiveTab={handleTabChange}
+      />
 
       {/* Mobile & Tablet Bottom Navigation Dock */}
       <MobileBottomBar activeTab={activeTab} setActiveTab={handleTabChange} />
