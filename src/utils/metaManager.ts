@@ -1,6 +1,30 @@
 import { ProjectItem } from "../data/projectsData";
 import { LeadershipProfile, SITE_INFO } from "../data/siteData";
 
+export const PRIMARY_CANONICAL_DOMAIN = "https://mohalkar-architects-planners-a25s.vercel.app";
+
+/**
+ * Resolves the authoritative master domain for canonical tags.
+ * Strips preview/sandbox hostnames so Google always indexes the verified master production domain.
+ */
+export function getAuthoritativeBaseDomain(): string {
+  if (typeof window === "undefined") {
+    return PRIMARY_CANONICAL_DOMAIN;
+  }
+  const host = window.location.hostname;
+  if (
+    host === "localhost" ||
+    host === "127.0.0.1" ||
+    host.includes("run.app") ||
+    host.includes("webcontainer") ||
+    host.includes("csb.app") ||
+    host.includes("stackblitz")
+  ) {
+    return PRIMARY_CANONICAL_DOMAIN;
+  }
+  return window.location.origin || PRIMARY_CANONICAL_DOMAIN;
+}
+
 export interface TabMetaData {
   title: string;
   description: string;
@@ -114,7 +138,10 @@ export interface ActiveMetaContext {
  */
 export function getActiveMeta(context: ActiveMetaContext): TabMetaData & { canonicalUrl: string } {
   const { activeTab, selectedProject, selectedLeader, adminSubTab } = context;
-  const baseUrl = typeof window !== "undefined" ? window.location.origin : "https://mohalkararchitects.in";
+  const baseUrl = getAuthoritativeBaseDomain();
+
+  // Normalize active tab (strip any leading/trailing hashes or slashes)
+  const normalizedTab = (activeTab || "home").toLowerCase().replace(/^[/#]+|[/#]+$/g, "");
 
   // Case 1: Specific Project Modal lightbox is active
   if (selectedProject) {
@@ -154,25 +181,31 @@ export function getActiveMeta(context: ActiveMetaContext): TabMetaData & { canon
     };
   }
 
-  // Case 3: Admin Console with specific sub-tabs
-  if (activeTab === "admin" && adminSubTab && ADMIN_SUBTAB_TITLES[adminSubTab]) {
+  // Case 3: Admin Console with specific sub-tabs (strictly NO hash '#')
+  if (normalizedTab === "admin") {
+    const subTabTitle = adminSubTab && ADMIN_SUBTAB_TITLES[adminSubTab];
+    const canonicalPath = adminSubTab ? `/admin?tab=${encodeURIComponent(adminSubTab)}` : "/admin";
     return {
-      title: ADMIN_SUBTAB_TITLES[adminSubTab],
+      title: subTabTitle || "Studio Admin Portal | Mohalkar Architects & Planners",
       description:
         "Executive studio console for Mohalkar Architects & Planners: portfolio pipeline, client CRM leads, telemetry analytics, and audit logs.",
       keywords: "Mohalkar admin, studio operations, project management",
-      canonicalPath: `/#admin?tab=${adminSubTab}`,
-      canonicalUrl: `${baseUrl}/#admin?tab=${adminSubTab}`,
+      canonicalPath,
+      canonicalUrl: `${baseUrl}${canonicalPath}`,
       ogImage: "/images/logo2.png",
       pageType: "admin",
     };
   }
 
   // Case 4: Standard Tab navigation
-  const config = TAB_META_CONFIGS[activeTab] || TAB_META_CONFIGS.home;
+  const config = TAB_META_CONFIGS[normalizedTab] || TAB_META_CONFIGS.home;
+  const canonicalPath = config.canonicalPath;
+  const canonicalUrl = canonicalPath === "/" ? `${baseUrl}/` : `${baseUrl}${canonicalPath}`;
+
   return {
     ...config,
-    canonicalUrl: `${baseUrl}${config.canonicalPath}`,
+    canonicalPath,
+    canonicalUrl,
   };
 }
 
@@ -190,16 +223,30 @@ function setMetaTag(selector: string, attributeName: "name" | "property", attrib
 }
 
 /**
- * Creates or updates the `<link rel="canonical">` element
+ * Creates or updates the `<link rel="canonical">` element,
+ * guaranteeing no '#' hash fragment and removing any duplicate tags.
  */
 function setCanonicalLink(href: string) {
+  if (typeof document === "undefined") return;
+
+  // Clean and sanitize canonical URL (strip hash fragments)
+  const cleanHref = href.split("#")[0].trim();
+
   let link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
   if (!link) {
     link = document.createElement("link");
     link.setAttribute("rel", "canonical");
     document.head.appendChild(link);
   }
-  link.setAttribute("href", href);
+  link.setAttribute("href", cleanHref);
+
+  // Clean up any extra/duplicate canonical tags
+  const allCanonicalLinks = document.querySelectorAll<HTMLLinkElement>('link[rel="canonical"]');
+  if (allCanonicalLinks.length > 1) {
+    for (let i = 1; i < allCanonicalLinks.length; i++) {
+      allCanonicalLinks[i].remove();
+    }
+  }
 }
 
 /**
@@ -216,7 +263,7 @@ function updateJsonLdSchema(meta: TabMetaData & { canonicalUrl: string }, contex
     document.head.appendChild(scriptElement);
   }
 
-  const baseUrl = typeof window !== "undefined" ? window.location.origin : "https://mohalkararchitects.in";
+  const baseUrl = getAuthoritativeBaseDomain();
 
   const firmSchema = {
     "@type": "ArchitecturalFirm",
@@ -298,7 +345,7 @@ export function applyMetaTags(context: ActiveMetaContext): TabMetaData & { canon
   }
 
   const meta = getActiveMeta(context);
-  const baseUrl = typeof window !== "undefined" ? window.location.origin : "https://mohalkararchitects.in";
+  const baseUrl = getAuthoritativeBaseDomain();
   const absoluteImage = meta.ogImage?.startsWith("http")
     ? meta.ogImage
     : `${baseUrl}${meta.ogImage || "/images/hero1.jpg"}`;
@@ -325,11 +372,41 @@ export function applyMetaTags(context: ActiveMetaContext): TabMetaData & { canon
   setMetaTag('meta[name="twitter:title"]', "name", "twitter:title", meta.title);
   setMetaTag('meta[name="twitter:description"]', "name", "twitter:description", meta.description);
   setMetaTag('meta[name="twitter:image"]', "name", "twitter:image", absoluteImage);
+  setMetaTag('meta[name="twitter:url"]', "name", "twitter:url", meta.canonicalUrl);
 
-  // 6. Canonical URL
+  // 6. Canonical URL (strictly stripped of any '#' hash routing artifacts)
   setCanonicalLink(meta.canonicalUrl);
 
-  // 7. Schema.org JSON-LD Structured Data
+  // 7. Alternate Hreflang Canonical Links
+  let hreflangEn = document.querySelector<HTMLLinkElement>('link[rel="alternate"][hreflang="en"]');
+  if (!hreflangEn) {
+    hreflangEn = document.createElement("link");
+    hreflangEn.setAttribute("rel", "alternate");
+    hreflangEn.setAttribute("hreflang", "en");
+    document.head.appendChild(hreflangEn);
+  }
+  hreflangEn.setAttribute("href", meta.canonicalUrl);
+
+  let hreflangDefault = document.querySelector<HTMLLinkElement>('link[rel="alternate"][hreflang="x-default"]');
+  if (!hreflangDefault) {
+    hreflangDefault = document.createElement("link");
+    hreflangDefault.setAttribute("rel", "alternate");
+    hreflangDefault.setAttribute("hreflang", "x-default");
+    document.head.appendChild(hreflangDefault);
+  }
+  hreflangDefault.setAttribute("href", meta.canonicalUrl);
+
+  // 8. Search Engine Indexing Directives
+  const normalizedTab = (context.activeTab || "").toLowerCase().replace(/^[/#]+|[/#]+$/g, "");
+  const isPrivate = normalizedTab === "admin";
+  const robotsDirective = isPrivate
+    ? "noindex, nofollow"
+    : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
+
+  setMetaTag('meta[name="robots"]', "name", "robots", robotsDirective);
+  setMetaTag('meta[name="googlebot"]', "name", "googlebot", robotsDirective);
+
+  // 9. Schema.org JSON-LD Structured Data
   updateJsonLdSchema(meta, context);
 
   // 8. Dispatch custom event so the UI/Admin dashboard can display real-time SEO health

@@ -24,7 +24,7 @@ function getSystemPreference(): Theme {
 }
 
 function getStoredThemeMode(): ThemeMode {
-  if (typeof window === 'undefined') return 'dark';
+  if (typeof window === 'undefined') return 'light';
   try {
     const saved = localStorage.getItem(STORAGE_KEY_2) || localStorage.getItem(STORAGE_KEY_1);
     if (saved === 'light' || saved === 'dark' || saved === 'system') {
@@ -33,7 +33,7 @@ function getStoredThemeMode(): ThemeMode {
   } catch {
     // ignore
   }
-  return 'dark';
+  return 'light';
 }
 
 function applyThemeToDOM(isDark: boolean) {
@@ -58,8 +58,8 @@ function applyThemeToDOM(isDark: boolean) {
     if (body) {
       body.classList.remove('dark');
       body.classList.add('light');
-      body.style.backgroundColor = '#f8f9fb';
-      body.style.color = '#1a1d24';
+      body.style.backgroundColor = '#f7f5f2';
+      body.style.color = '#3a3a3a';
     }
   }
 }

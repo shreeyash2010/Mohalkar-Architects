@@ -3,17 +3,23 @@ import { Home, Layers, Building, Wrench, Send, Calculator } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 interface MobileBottomBarProps {
-  currentSection: string;
-  onNavigate: (section: string) => void;
-  onOpenEstimator: () => void;
+  currentSection?: string;
+  activeTab?: string;
+  onNavigate?: (section: string) => void;
+  setActiveTab?: (section: string) => void;
+  onOpenEstimator?: () => void;
 }
 
 export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
   currentSection,
+  activeTab,
   onNavigate,
+  setActiveTab,
   onOpenEstimator
 }) => {
   const { isDark } = useTheme();
+  const current = activeTab || currentSection || 'home';
+  const handleNavigate = setActiveTab || onNavigate || (() => {});
 
   const items = [
     { id: 'home', label: 'Home', icon: Home },
@@ -34,7 +40,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
       <div className="grid grid-cols-5 h-14">
         {items.map(item => {
           const Icon = item.icon;
-          const isActive = currentSection === item.id;
+          const isActive = current === item.id;
 
           if (item.isSpecial) {
             return (
@@ -54,7 +60,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
           return (
             <button
               key={item.id}
-              onClick={() => onNavigate(item.id)}
+              onClick={() => handleNavigate(item.id)}
               className={`flex flex-col items-center justify-center text-center cursor-pointer transition-colors ${
                 isActive
                   ? 'text-[#c8a96e] font-semibold'

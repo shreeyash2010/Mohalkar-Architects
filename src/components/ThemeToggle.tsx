@@ -2,7 +2,10 @@ import React from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
-export const ThemeToggle: React.FC<{ className?: string }> = ({ className = '' }) => {
+export const ThemeToggle: React.FC<{ className?: string; showLabel?: boolean }> = ({
+  className = '',
+  showLabel = false
+}) => {
   const { isDark, toggleTheme } = useTheme();
 
   return (
@@ -21,6 +24,11 @@ export const ThemeToggle: React.FC<{ className?: string }> = ({ className = '' }
         <Sun className="w-4 h-4 transition-transform duration-300 rotate-0 hover:rotate-90" />
       ) : (
         <Moon className="w-4 h-4 transition-transform duration-300 rotate-0 hover:-rotate-12 text-[#a38247]" />
+      )}
+      {showLabel && (
+        <span className="ml-2 text-xs font-semibold uppercase tracking-wider">
+          {isDark ? 'Light Theme' : 'Dark Theme'}
+        </span>
       )}
     </button>
   );

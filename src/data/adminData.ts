@@ -39,6 +39,20 @@ export interface ClientEnquiry {
   status: "new" | "in_review" | "quoted" | "closed";
 }
 
+export interface EnquiryLead {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  typology: string;
+  estimatedArea?: string;
+  estimatedBudget?: string;
+  message?: string;
+  submittedAt: string;
+  status: string;
+}
+
 // Initial working projects pipeline for Mohalkar Architects
 export const INITIAL_WORKING_PROJECTS: WorkingProject[] = [
   {

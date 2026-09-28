@@ -150,7 +150,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
     try {
       setDownloadingProjectId(project.id);
       setDownloadStatus("Generating architectural blueprint...");
-      await downloadSampleBlueprint(project, (status) => setDownloadStatus(status));
+      await downloadSampleBlueprint(project, (status: string) => setDownloadStatus(status));
       setToastMessage(`Sample Blueprint for "${project.title}" downloaded successfully!`);
       setTimeout(() => setToastMessage(null), 4000);
     } catch (err) {

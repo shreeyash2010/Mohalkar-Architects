@@ -62,7 +62,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
     try {
       setIsDownloading(true);
       setDownloadStatus("Generating blueprint PDF...");
-      await downloadSampleBlueprint(project, (status) => setDownloadStatus(status));
+      await downloadSampleBlueprint(project, (status: string) => setDownloadStatus(status));
       setToastMessage(`Sample Blueprint for "${project.title}" downloaded successfully!`);
       setTimeout(() => setToastMessage(null), 3500);
     } catch (err) {

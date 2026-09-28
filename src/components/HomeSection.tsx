@@ -18,101 +18,81 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
   const { isDark } = useTheme();
 
   return (
-    <div className="space-y-14 sm:space-y-20">
-      {/* ── HERO SECTION ──────────────────────────── */}
-      <section className="relative pt-24 sm:pt-28 pb-8 sm:pb-10 px-4 sm:px-6 lg:px-8 overflow-hidden bg-blueprint-grid">
-        {/* Soft architectural glow */}
+    <div className="space-y-0">
+      {/* ── HERO SECTION (Identical to mohalkar-architects-planners-9a3t) ──────────────────────────── */}
+      <section className="relative min-h-[90vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Full-bleed background image with subtle scale transition */}
         <div
-          className={`absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[140px] pointer-events-none ${
-            isDark ? "bg-[#c8a96e]/10" : "bg-[#c8a96e]/15"
-          }`}
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-[8000ms] hover:scale-105"
+          style={{
+            backgroundImage: "url('/images/hugo-sousa-BghGseQbAkA-unsplash.jpg')",
+          }}
+        />
+        {/* Cinematic dark overlay identical to reference site */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(160deg, rgba(10,10,10,0.76) 0%, rgba(10,10,10,0.58) 50%, rgba(10,10,10,0.76) 100%)",
+          }}
         />
 
-        <div className="relative max-w-5xl mx-auto text-center z-10">
-          <div
-            className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border backdrop-blur-md mb-6 ${
-              isDark
-                ? "border-[#c8a96e]/30 bg-[#161a22]/70"
-                : "border-[#c8a96e]/50 bg-[#ffffff]/80 shadow-sm"
-            }`}
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#c8a96e] animate-pulse" />
-            <span className="text-[11px] uppercase tracking-widest text-[#c8a96e] font-semibold">
-              {SITE_INFO.established} · Maharashtra &amp; Pan-India
-            </span>
-          </div>
+        <div className="relative z-10 max-w-4xl mx-auto text-center px-4 sm:px-6 py-28 sm:py-36 text-white space-y-4">
+          <p className="font-sans text-[0.78rem] font-medium tracking-[4px] uppercase text-[#c8a96e] mb-3">
+            {SITE_INFO.established}
+          </p>
 
-          <h1
-            className={`font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-[1.08] max-w-4xl mx-auto text-balance ${
-              isDark ? "text-white" : "text-neutral-900"
-            }`}
-          >
+          <h1 className="font-serif text-3xl sm:text-5xl md:text-7xl font-light text-white tracking-normal leading-[1.12] mb-4 text-balance">
             &ldquo;Every Space Has a Story <br className="hidden sm:inline" />
-            <span className="text-[#c8a96e] italic font-normal">We Design Yours</span>&rdquo;
+            <span className="italic font-normal">We Design Yours</span>&rdquo;
           </h1>
 
-          <p
-            className={`mt-6 text-sm sm:text-base md:text-lg font-light tracking-wide max-w-2xl mx-auto ${
-              isDark ? "text-neutral-300" : "text-neutral-700"
-            }`}
-          >
-            {SITE_INFO.heroSub}
+          <p className="font-sans text-xs sm:text-sm md:text-base font-light tracking-[2px] text-white/80 max-w-2xl mx-auto uppercase">
+            Modern Architecture &nbsp;|&nbsp; Interior Design &nbsp;|&nbsp; Urban Planning
           </p>
 
           {/* Action CTAs */}
-          <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-sm sm:max-w-none mx-auto">
+          <div className="pt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             <button
               onClick={() => setActiveTab("projects")}
-              className="w-full sm:w-auto px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#0c0e12] bg-[#c8a96e] hover:bg-[#dfc085] rounded-md transition-all shadow-xl hover:shadow-[#c8a96e]/20 flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+              className="btn-gold cursor-pointer"
             >
               <span>View Projects</span>
-              <ArrowRight className="w-4 h-4" />
             </button>
 
             <button
               onClick={() => setActiveTab("about")}
-              className={`w-full sm:w-auto px-6 py-3.5 text-xs font-semibold uppercase tracking-wider rounded-md transition-colors cursor-pointer text-center border ${
-                isDark
-                  ? "text-neutral-200 hover:text-white bg-[#161a22] hover:bg-[#1e232d] border-[#252830]"
-                  : "text-neutral-800 hover:text-black bg-white hover:bg-[#f4f6fa] border-[#d8dde6] shadow-sm"
-              }`}
+              className="btn-hero-outline cursor-pointer"
             >
               About Us
             </button>
 
             <button
               onClick={onOpenEstimator}
-              className={`w-full sm:w-auto px-5 py-3.5 text-xs font-semibold uppercase tracking-wider rounded-md transition-colors flex items-center justify-center gap-2 cursor-pointer border ${
-                isDark
-                  ? "text-[#c8a96e] hover:text-[#dfc085] bg-[#c8a96e]/10 hover:bg-[#c8a96e]/20 border-[#c8a96e]/30"
-                  : "text-[#8c6d32] hover:text-black bg-[#c8a96e]/15 hover:bg-[#c8a96e]/25 border-[#c8a96e]/40 shadow-sm"
-              }`}
+              className="inline-flex items-center gap-2 px-6 py-3 text-xs font-semibold uppercase tracking-[2px] rounded-[2px] bg-[#c8a96e]/20 text-[#c8a96e] border border-[#c8a96e]/50 hover:bg-[#c8a96e] hover:text-[#111827] transition-all cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Scope Calculator</span>
+              <span>Scope Estimator</span>
             </button>
           </div>
+        </div>
 
-          {/* Key Quantitative Stats */}
-          <div
-            className={`mt-12 sm:mt-14 pt-8 sm:pt-10 border-t grid grid-cols-2 md:grid-cols-4 gap-6 ${
-              isDark ? "border-[#1e232d]" : "border-[#e5e9f0]"
-            }`}
-          >
+        {/* Scroll hint chevron */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 text-[#c8a96e] animate-bounce pointer-events-none text-xl">
+          <ChevronRight className="w-6 h-6 rotate-90" />
+        </div>
+      </section>
+
+      {/* ── HIGH-CONTRAST STATS SECTION (Reference signature dark bar) ────────────────── */}
+      <section className="bg-[#111827] text-white py-12 sm:py-16 border-y border-white/[0.08]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/[0.08]">
             {SITE_INFO.stats.map((stat, idx) => (
-              <div key={idx} className="text-center">
-                <span
-                  className={`font-serif text-3xl sm:text-4xl font-bold tabular-nums tracking-tight ${
-                    isDark ? "text-white" : "text-neutral-900"
-                  }`}
-                >
+              <div key={idx} className="text-center py-6 px-4">
+                <span className="font-serif text-3xl sm:text-5xl font-bold text-[#c8a96e] block leading-none mb-2">
                   {stat.value}
                 </span>
-                <p
-                  className={`text-[11px] uppercase tracking-wider font-medium mt-1 ${
-                    isDark ? "text-neutral-400" : "text-neutral-600"
-                  }`}
-                >
+                <p className="font-sans text-[0.75rem] uppercase tracking-[2px] text-white/60 font-medium">
                   {stat.label}
                 </p>
               </div>
@@ -121,376 +101,262 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
         </div>
       </section>
 
-      {/* ── COMPANY OVERVIEW SECTION ──────────────── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-6 space-y-6">
-            <div className="space-y-2">
-              <span className="text-xs uppercase tracking-widest text-[#c8a96e] font-semibold">
-                Company Overview
-              </span>
-              <h2
-                className={`font-serif text-3xl sm:text-4xl md:text-5xl font-bold leading-tight ${
-                  isDark ? "text-white" : "text-neutral-900"
-                }`}
-              >
-                Designing Spaces <br />
-                <span
-                  className={`italic font-normal ${
-                    isDark ? "text-neutral-400" : "text-neutral-500"
-                  }`}
+      {/* ── COMPANY OVERVIEW SECTION (Crisp white / stone) ──────────────── */}
+      <section className={`py-20 sm:py-28 px-4 sm:px-6 lg:px-8 ${isDark ? "bg-[#0c0e12]" : "bg-white"}`}>
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            <div className="lg:col-span-6 space-y-6">
+              <div>
+                <span className="section-label">Company Overview</span>
+                <h2 className={`section-heading ${isDark ? "text-white" : "text-[#111827]"}`}>
+                  Designing Spaces <br />
+                  <span className="italic font-normal text-[#c8a96e]">That Inspire</span>
+                </h2>
+              </div>
+
+              <p className={`section-body ${isDark ? "text-neutral-300" : "text-[#555555]"}`}>
+                <strong className={isDark ? "text-white font-semibold" : "text-[#111827] font-semibold"}>
+                  Mohalkar Architects &amp; Planners
+                </strong>{" "}
+                is a leading design consultancy specialising in residential, commercial, and urban
+                planning. With a passion for purposeful beauty, we deliver innovative, sustainable,
+                and tailored solutions to private clients, developers, and local bodies across India.
+              </p>
+
+              <p className={`section-body ${isDark ? "text-neutral-400" : "text-[#666666]"}`}>
+                From concept to completion, every project reflects our commitment to craftsmanship,
+                context, and lasting value. We blend architectural rigor with pragmatic constructability.
+              </p>
+
+              <div className="pt-2 flex flex-wrap items-center gap-4">
+                <button
+                  onClick={() => setActiveTab("projects")}
+                  className="btn-gold cursor-pointer"
                 >
-                  That Inspire
-                </span>
-              </h2>
+                  <span>Explore Our Work</span>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab("about")}
+                  className="text-xs font-semibold uppercase tracking-[2px] text-[#c8a96e] hover:text-[#a8843e] underline underline-offset-4 cursor-pointer"
+                >
+                  Read Our Story &rarr;
+                </button>
+              </div>
             </div>
 
-            <p
-              className={`text-sm leading-relaxed ${
-                isDark ? "text-neutral-300" : "text-neutral-700"
-              }`}
-            >
-              <strong className={isDark ? "text-white font-semibold" : "text-neutral-900 font-semibold"}>
-                Mohalkar Architects &amp; Planners
-              </strong>{" "}
-              is a leading design consultancy specialising in residential, commercial, and urban
-              planning. With a passion for purposeful beauty, we deliver innovative, sustainable,
-              and tailored solutions to private clients, developers, and local bodies across India.
-            </p>
+            {/* Image with signature bottom-left gold badge */}
+            <div className="lg:col-span-6">
+              <div className="relative rounded-[4px] overflow-visible">
+                <img
+                  src="/images/hugo-sousa-BghGseQbAkA-unsplash.jpg"
+                  alt="Mohalkar Architecture"
+                  className="w-full h-[360px] sm:h-[460px] object-cover rounded-[4px] shadow-xl block"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = "/images/project6.jpeg";
+                  }}
+                />
 
-            <p
-              className={`text-sm leading-relaxed ${
-                isDark ? "text-neutral-400" : "text-neutral-600"
-              }`}
-            >
-              From concept to completion, every project reflects our commitment to craftsmanship,
-              context, and lasting value. We blend architectural rigor with pragmatic constructability.
-            </p>
-
-            <div className="pt-2 flex flex-wrap items-center gap-4">
-              <button
-                onClick={() => setActiveTab("projects")}
-                className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-[#0c0e12] bg-[#c8a96e] hover:bg-[#dfc085] rounded-md transition-colors cursor-pointer flex items-center gap-2 shadow-sm"
-              >
-                <span>Explore Our Work</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-
-              <button
-                onClick={() => setActiveTab("about")}
-                className="text-xs font-semibold uppercase tracking-wider text-[#c8a96e] hover:text-[#dfc085] underline underline-offset-4 cursor-pointer"
-              >
-                Read Our Story &rarr;
-              </button>
+                {/* Signature Gold Badge */}
+                <div className="absolute -bottom-6 -left-4 sm:-bottom-6 sm:-left-6 bg-[#c8a96e] text-[#111827] p-5 sm:p-6 rounded-[4px] text-center shadow-xl border border-[#c8a96e]/30">
+                  <span className="font-serif text-3xl sm:text-4xl font-bold block leading-none">
+                    2+
+                  </span>
+                  <span className="font-sans text-[0.7rem] font-bold uppercase tracking-[2px] block mt-1.5 whitespace-nowrap">
+                    Years of Excellence
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="lg:col-span-6">
-            <div
-              className={`relative rounded-2xl overflow-hidden border shadow-2xl group ${
-                isDark ? "border-[#252830] bg-[#161a22]" : "border-[#d8dde6] bg-white"
-              }`}
-            >
-              <img
-                src="/images/hugo-sousa-BghGseQbAkA-unsplash.jpg"
-                alt="Mohalkar Architecture"
-                className="w-full h-[400px] sm:h-[480px] object-cover transition-transform duration-700 group-hover:scale-105"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = "/images/project6.jpeg";
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+      {/* ── CORE VALUES SECTION (Alabaster #f7f5f2 background) ──────────────── */}
+      <section className={`py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-y ${
+        isDark ? "bg-[#101319] border-[#1e232d]" : "bg-[#f7f5f2] border-black/[0.06]"
+      }`}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <span className="section-label">What Drives Us</span>
+            <h2 className={`section-heading ${isDark ? "text-white" : "text-[#111827]"}`}>
+              Our Core Values
+            </h2>
+            <p className={`text-sm ${isDark ? "text-neutral-400" : "text-[#666666]"}`}>
+              Every drawing, volume, and material specification is rooted in foundational design ethics.
+            </p>
+          </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {CORE_VALUES.map((val, idx) => (
               <div
-                className={`absolute bottom-6 left-6 right-6 p-4 rounded-xl backdrop-blur-md border flex items-center justify-between ${
+                key={idx}
+                className={`p-8 rounded-[4px] border gold-card-hover ${
                   isDark
-                    ? "bg-[#0c0e12]/80 border-[#252830]"
-                    : "bg-[#ffffff]/90 border-[#e2e6ee] text-neutral-900 shadow-lg"
+                    ? "bg-[#141822] border-[#252830]"
+                    : "bg-white border-black/[0.07] shadow-xs"
                 }`}
               >
-                <div>
-                  <span
-                    className={`font-serif text-2xl font-bold ${
-                      isDark ? "text-white" : "text-neutral-900"
-                    }`}
-                  >
-                    2+ Years
-                  </span>
-                  <p className="text-[11px] uppercase tracking-wider text-[#c8a96e] font-semibold">
-                    Of Architectural Excellence
-                  </p>
-                </div>
-                <div className="text-right">
-                  <span
-                    className={`text-xs font-mono font-medium ${
-                      isDark ? "text-neutral-300" : "text-neutral-800"
-                    }`}
-                  >
-                    PUNE · BHOOM · DHARASHIV
-                  </span>
-                  <p
-                    className={`text-[10px] ${
-                      isDark ? "text-neutral-400" : "text-neutral-600"
-                    }`}
-                  >
-                    Headquartered in Maharashtra
-                  </p>
-                </div>
+                <span className="font-mono text-xs text-[#c8a96e] font-bold block mb-3">0{idx + 1}.</span>
+                <h3 className={`font-serif text-xl font-bold mb-3 ${isDark ? "text-white" : "text-[#111827]"}`}>
+                  {val.title}
+                </h3>
+                <p className={`text-xs leading-relaxed ${isDark ? "text-neutral-400" : "text-[#666666]"}`}>
+                  {val.description}
+                </p>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── CORE PHILOSOPHY / VALUES ──────────────── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs uppercase tracking-widest text-[#c8a96e] font-semibold">
-            What Drives Us
-          </span>
-          <h2
-            className={`font-serif text-3xl sm:text-4xl font-bold mt-1 ${
-              isDark ? "text-white" : "text-neutral-900"
-            }`}
-          >
-            Our Core Values
-          </h2>
-          <p
-            className={`text-xs sm:text-sm mt-2 ${
-              isDark ? "text-neutral-400" : "text-neutral-600"
-            }`}
-          >
-            Every drawing, volume, and material specification is rooted in foundational design ethics.
-          </p>
-        </div>
+      {/* ── LEADERSHIP SECTION (White background) ──────────────────────── */}
+      <section className={`py-20 sm:py-28 px-4 sm:px-6 lg:px-8 ${isDark ? "bg-[#0c0e12]" : "bg-white"}`}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <span className="section-label">Leadership</span>
+            <h2 className={`section-heading ${isDark ? "text-white" : "text-[#111827]"}`}>
+              Meet Our Team
+            </h2>
+            <p className={`text-sm ${isDark ? "text-neutral-400" : "text-[#666666]"}`}>
+              Principals guiding architectural design, planning vision, and client partnership.
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {CORE_VALUES.map((val, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{
-                duration: 0.5,
-                delay: (idx % 4) * 0.08,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className={`p-6 rounded-xl border transition-all space-y-3 ${
-                isDark
-                  ? "border-[#252830] bg-[#12151c] hover:border-[#c8a96e]/40"
-                  : "border-[#e2e6ee] bg-white hover:border-[#c8a96e] shadow-sm"
-              }`}
-            >
-              <span className="font-mono text-xs text-[#c8a96e] font-bold">0{idx + 1}.</span>
-              <h3
-                className={`font-serif text-xl font-bold ${
-                  isDark ? "text-white" : "text-neutral-900"
-                }`}
-              >
-                {val.title}
-              </h3>
-              <p
-                className={`text-xs leading-relaxed ${
-                  isDark ? "text-neutral-400" : "text-neutral-600"
-                }`}
-              >
-                {val.description}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── LEADERSHIP SECTION ──────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs uppercase tracking-widest text-[#c8a96e] font-semibold">
-            Leadership
-          </span>
-          <h2
-            className={`font-serif text-3xl sm:text-4xl font-bold mt-1 ${
-              isDark ? "text-white" : "text-neutral-900"
-            }`}
-          >
-            Meet Our Team
-          </h2>
-          <p
-            className={`text-xs sm:text-sm mt-2 ${
-              isDark ? "text-neutral-400" : "text-neutral-600"
-            }`}
-          >
-            Principals guiding architectural design, planning vision, and client partnership.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {LEADERSHIP_PROFILES.map((leader, idx) => (
-            <motion.div
-              key={leader.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{
-                duration: 0.55,
-                delay: idx * 0.12,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              onClick={() => onSelectLeader(leader.id)}
-              className={`group p-6 rounded-xl border transition-all cursor-pointer shadow-lg space-y-4 ${
-                isDark
-                  ? "border-[#252830] bg-[#12151c] hover:border-[#c8a96e]"
-                  : "border-[#e2e6ee] bg-white hover:border-[#c8a96e] shadow-md"
-              }`}
-            >
-              <div className="flex items-center gap-4">
-                <div
-                  className={`w-20 h-20 shrink-0 rounded-xl overflow-hidden border p-1 group-hover:border-[#c8a96e] transition-colors ${
-                    isDark ? "border-[#252830] bg-[#161a22]" : "border-[#e2e6ee] bg-[#f8f9fb]"
-                  }`}
-                >
-                  <img
-                    src={leader.photo}
-                    alt={leader.name}
-                    className="w-full h-full object-contain"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = "/images/ceo.png";
-                    }}
-                  />
-                </div>
-                <div>
-                  <span className="inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-[#c8a96e]/15 text-[#8c6d32] dark:text-[#c8a96e] rounded mb-1 border border-[#c8a96e]/30">
-                    {leader.designation}
-                  </span>
-                  <h3
-                    className={`font-serif text-xl font-bold group-hover:text-[#c8a96e] transition-colors ${
-                      isDark ? "text-white" : "text-neutral-900"
-                    }`}
-                  >
-                    {leader.name}
-                  </h3>
-                  <p
-                    className={`text-xs ${
-                      isDark ? "text-neutral-400" : "text-neutral-600"
-                    }`}
-                  >
-                    {leader.role.split("·")[1] || leader.role}
-                  </p>
-                </div>
-              </div>
-
-              <p
-                className={`text-xs leading-relaxed ${
-                  isDark ? "text-neutral-300" : "text-neutral-700"
-                }`}
-              >
-                {leader.bio}
-              </p>
-
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {LEADERSHIP_PROFILES.map((leader) => (
               <div
-                className={`pt-2 flex items-center justify-between border-t text-xs text-[#c8a96e] font-semibold uppercase tracking-wider ${
-                  isDark ? "border-[#1e232d]" : "border-[#e5e9f0]"
+                key={leader.id}
+                onClick={() => onSelectLeader(leader.id)}
+                className={`group p-8 rounded-[4px] border transition-all cursor-pointer gold-card-hover ${
+                  isDark
+                    ? "border-[#252830] bg-[#141822] hover:border-[#c8a96e]"
+                    : "border-black/[0.07] bg-white hover:border-[#c8a96e] shadow-sm hover:shadow-xl"
                 }`}
               >
-                <span>View Full Credentials &amp; Bio</span>
-                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                <div className="flex items-center gap-4">
+                  <div
+                    className={`w-20 h-20 shrink-0 rounded-[6px] overflow-hidden border p-1 group-hover:border-[#c8a96e] transition-colors ${
+                      isDark ? "border-[#252830] bg-[#161a22]" : "border-black/[0.08] bg-[#f7f5f2]"
+                    }`}
+                  >
+                    <img
+                      src={leader.photo}
+                      alt={leader.name}
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = "/images/ceo.png";
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <span className="inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-[#c8a96e]/15 text-[#8c6d32] dark:text-[#c8a96e] rounded mb-1 border border-[#c8a96e]/30">
+                      {leader.designation}
+                    </span>
+                    <h3
+                      className={`font-serif text-xl font-bold group-hover:text-[#c8a96e] transition-colors ${
+                        isDark ? "text-white" : "text-[#111827]"
+                      }`}
+                    >
+                      {leader.name}
+                    </h3>
+                    <p className={`text-xs ${isDark ? "text-neutral-400" : "text-[#666666]"}`}>
+                      {leader.role.split("·")[1] || leader.role}
+                    </p>
+                  </div>
+                </div>
+
+                <p className={`text-xs leading-relaxed mt-4 ${isDark ? "text-neutral-300" : "text-[#555555]"}`}>
+                  {leader.bio}
+                </p>
+
+                <div className="pt-4 flex items-center justify-between border-t border-black/[0.06] dark:border-white/[0.08] text-xs text-[#c8a96e] font-semibold uppercase tracking-[1.5px] mt-4">
+                  <span>View Full Credentials &amp; Bio</span>
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                </div>
               </div>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ── STUDIO PARTNERS / COLLABORATION ─────────── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="mb-10">
-          <span className="text-xs uppercase tracking-widest text-[#c8a96e] font-semibold">
-            Collaboration
-          </span>
-          <h2
-            className={`font-serif text-2xl sm:text-3xl font-bold mt-1 ${
-              isDark ? "text-white" : "text-neutral-900"
-            }`}
-          >
-            Our Studio Partners &amp; Associates
-          </h2>
-          <p
-            className={`text-xs mt-1 max-w-lg mx-auto ${
-              isDark ? "text-neutral-400" : "text-neutral-600"
-            }`}
-          >
-            Strategic alliances with structural consultants, MEP specialists, and urban planning institutions.
-          </p>
-        </div>
+      {/* ── STUDIO PARTNERS (Associates section matching reference site) ─────────── */}
+      <section className={`py-16 sm:py-20 px-4 sm:px-6 lg:px-8 text-center border-t ${
+        isDark ? "bg-[#101319] border-[#1e232d]" : "bg-[#ffffff] border-black/[0.06]"
+      }`}>
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-10">
+            <span className="section-label">Collaboration</span>
+            <h2 className={`font-serif text-2xl sm:text-3xl font-bold ${isDark ? "text-white" : "text-[#111827]"}`}>
+              Our Studio Partners &amp; Associates
+            </h2>
+            <p className={`text-xs mt-1 max-w-lg mx-auto ${isDark ? "text-neutral-400" : "text-[#666666]"}`}>
+              Strategic alliances with structural consultants, MEP specialists, and urban planning institutions.
+            </p>
+          </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 items-center max-w-4xl mx-auto">
-          {SITE_INFO.partners.map((partner, idx) => (
-            <div
-              key={idx}
-              className={`p-5 rounded-xl border flex items-center justify-center h-24 transition-colors ${
-                isDark
-                  ? "border-[#252830] bg-[#12151c]/60 hover:border-[#c8a96e]/40"
-                  : "border-[#e2e6ee] bg-white hover:border-[#c8a96e] shadow-sm"
-              }`}
-            >
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                className="max-h-12 max-w-[120px] object-contain grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = "/images/associates1.png";
-                }}
-              />
-            </div>
-          ))}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 items-center max-w-4xl mx-auto">
+            {SITE_INFO.partners.map((partner, idx) => (
+              <div
+                key={idx}
+                className={`p-6 rounded-[4px] border flex items-center justify-center h-28 transition-all hover:scale-105 ${
+                  isDark
+                    ? "border-[#252830] bg-[#141822]/60 hover:border-[#c8a96e]/40"
+                    : "border-black/[0.07] bg-[#f7f5f2] hover:bg-white hover:shadow-md"
+                }`}
+              >
+                <img
+                  src={partner.logo}
+                  alt={partner.name}
+                  className="max-h-14 max-w-[130px] object-contain grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = "/images/associates1.png";
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ── CTA BAND ───────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className={`rounded-2xl border p-8 sm:p-14 text-center relative overflow-hidden shadow-2xl ${
-            isDark
-              ? "border-[#c8a96e]/30 bg-gradient-to-r from-[#141720] via-[#1a1f2c] to-[#141720]"
-              : "border-[#c8a96e]/50 bg-gradient-to-r from-[#fefbf6] via-[#f7f2ea] to-[#fefbf6] shadow-xl"
-          }`}
-        >
-          <div className="relative z-10 max-w-2xl mx-auto space-y-4">
-            <span className="text-xs uppercase tracking-widest text-[#c8a96e] font-semibold">
-              Get in Touch
-            </span>
-            <h2
-              className={`font-serif text-3xl sm:text-4xl md:text-5xl font-bold leading-tight ${
-                isDark ? "text-white" : "text-neutral-900"
-              }`}
-            >
-              Let&rsquo;s Build Something <br />
-              <span className="italic font-normal text-[#c8a96e]">Extraordinary</span>
-            </h2>
-            <p
-              className={`text-xs sm:text-sm leading-relaxed ${
-                isDark ? "text-neutral-300" : "text-neutral-700"
-              }`}
-            >
-              Whether you are planning a modern bungalow, commercial hub, or master township, our
-              architects are ready to transform your vision into buildable perfection.
-            </p>
-            <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
-              <button
-                onClick={() => setActiveTab("enquiry")}
-                className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#0c0e12] bg-[#c8a96e] hover:bg-[#dfc085] rounded-md transition-all shadow-lg cursor-pointer active:scale-95"
-              >
-                Send an Enquiry &rarr;
-              </button>
-              <a
-                href={`tel:${SITE_INFO.contacts.phonePrimary}`}
-                className={`px-6 py-3.5 text-xs font-semibold uppercase tracking-wider rounded-md transition-colors border ${
-                  isDark
-                    ? "text-neutral-200 hover:text-white bg-[#161a22] border-[#252830]"
-                    : "text-neutral-800 hover:text-black bg-white border-[#d8dde6] shadow-sm"
-                }`}
-              >
-                Call: {SITE_INFO.contacts.phonePrimary}
-              </a>
+      <section className={`py-16 sm:py-24 px-4 sm:px-6 lg:px-8 ${isDark ? "bg-[#0c0e12]" : "bg-[#f7f5f2]"}`}>
+        <div className="max-w-5xl mx-auto">
+          <div
+            className={`rounded-[4px] border p-8 sm:p-14 text-center relative overflow-hidden shadow-xl ${
+              isDark
+                ? "border-[#c8a96e]/30 bg-gradient-to-r from-[#141720] via-[#1a1f2c] to-[#141720]"
+                : "border-[#c8a96e]/40 bg-white shadow-lg"
+            }`}
+          >
+            <div className="relative z-10 max-w-2xl mx-auto space-y-4">
+              <span className="section-label">Get in Touch</span>
+              <h2 className={`section-heading ${isDark ? "text-white" : "text-[#111827]"}`}>
+                Let&rsquo;s Build Something <br />
+                <span className="italic font-normal text-[#c8a96e]">Extraordinary</span>
+              </h2>
+              <p className={`section-body ${isDark ? "text-neutral-300" : "text-[#555555]"}`}>
+                Whether you are planning a modern bungalow, commercial hub, or master township, our
+                architects are ready to transform your vision into buildable perfection.
+              </p>
+              <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
+                <button
+                  onClick={() => setActiveTab("enquiry")}
+                  className="btn-gold cursor-pointer"
+                >
+                  Send an Enquiry &rarr;
+                </button>
+                <a
+                  href={`tel:${SITE_INFO.contacts.phonePrimary}`}
+                  className={`px-7 py-3 text-xs font-semibold uppercase tracking-[2px] rounded-[2px] transition-colors border ${
+                    isDark
+                      ? "text-neutral-200 hover:text-white bg-[#161a22] border-[#252830]"
+                      : "text-[#111827] hover:text-black bg-[#f7f5f2] border-black/[0.1] shadow-xs"
+                  }`}
+                >
+                  Call: {SITE_INFO.contacts.phonePrimary}
+                </a>
+              </div>
             </div>
           </div>
         </div>

@@ -37,17 +37,21 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const isHeroTransparent = activeTab === "home" && !scrolled;
+
   return (
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
+          isHeroTransparent
+            ? "bg-gradient-to-b from-black/75 via-black/40 to-transparent py-4 sm:py-5 border-b border-transparent"
+            : scrolled
             ? isDark
-              ? "bg-[#0c0e12]/90 backdrop-blur-md border-b border-[#252830] py-3.5 shadow-2xl"
-              : "bg-[#ffffff]/92 backdrop-blur-md border-b border-[#e5e9f0] py-3.5 shadow-md"
+              ? "bg-[#0c0e12]/92 backdrop-blur-md border-b border-[#252830] py-3.5 shadow-2xl"
+              : "bg-[#ffffff]/96 backdrop-blur-md border-b border-black/[0.07] py-3.5 shadow-sm"
             : isDark
-            ? "bg-gradient-to-b from-[#0c0e12]/90 to-transparent py-5"
-            : "bg-gradient-to-b from-[#ffffff]/90 to-transparent py-5"
+            ? "bg-gradient-to-b from-[#0c0e12]/90 to-transparent py-4 border-b border-[#252830]/40"
+            : "bg-[#ffffff]/96 backdrop-blur-md border-b border-black/[0.07] py-4 shadow-xs"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,10 +64,12 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
               aria-label="Mohalkar Architects & Planners"
             >
               <div
-                className={`relative w-10 h-10 rounded border overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105 ${
-                  isDark
+                className={`relative w-11 h-11 rounded-[4px] border overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105 ${
+                  isHeroTransparent
+                    ? "border-[#c8a96e]/40 bg-black/40 backdrop-blur-xs"
+                    : isDark
                     ? "border-[#c8a96e]/30 bg-[#161a22]"
-                    : "border-[#c8a96e]/40 bg-[#f4f6fa]"
+                    : "border-[#c8a96e]/40 bg-white shadow-xs"
                 }`}
               >
                 <img
@@ -77,20 +83,20 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
               </div>
               <div className="flex flex-col">
                 <span
-                  className={`font-serif text-xl sm:text-2xl font-bold tracking-wider group-hover:text-[#c8a96e] transition-colors leading-none ${
-                    isDark ? "text-white" : "text-neutral-900"
+                  className={`font-serif text-xl sm:text-2xl font-bold tracking-[3px] group-hover:text-[#c8a96e] transition-colors leading-none ${
+                    isHeroTransparent || isDark ? "text-white" : "text-[#111827]"
                   }`}
                 >
                   MOHALKAR
                 </span>
-                <span className="text-[9px] tracking-[0.25em] text-[#c8a96e] font-medium uppercase mt-1">
-                  Architects &amp; Planners
+                <span className="text-[9px] tracking-[3px] text-[#c8a96e] font-semibold uppercase mt-1">
+                  ARCHITECTS &amp; PLANNERS
                 </span>
               </div>
             </button>
 
             {/* Zone 2: Clean unboxed text navigation links (desktop only) */}
-            <nav className="hidden lg:flex items-center gap-8 text-sm font-medium">
+            <nav className="hidden lg:flex items-center gap-7 text-xs font-semibold uppercase tracking-[1.5px]">
               {navLinks.map((link) => {
                 const isActive = activeTab === link.id;
                 return (
@@ -99,10 +105,12 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
                     onClick={() => handleNavClick(link.id)}
                     className={`relative py-1 transition-colors whitespace-nowrap focus:outline-none focus-visible:ring-1 focus-visible:ring-[#c8a96e] cursor-pointer ${
                       isActive
-                        ? "text-[#c8a96e] font-semibold"
+                        ? "text-[#c8a96e] font-bold"
+                        : isHeroTransparent
+                        ? "text-white/85 hover:text-[#c8a96e]"
                         : isDark
                         ? "text-[#9da3ae] hover:text-white"
-                        : "text-neutral-600 hover:text-neutral-900"
+                        : "text-[#3a3a3a] hover:text-[#c8a96e]"
                     }`}
                   >
                     {link.label}
@@ -131,7 +139,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
               </a>
               <button
                 onClick={() => handleNavClick("enquiry")}
-                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#0c0e12] bg-[#c8a96e] hover:bg-[#dfc085] rounded-md transition-all shadow-md hover:shadow-[#c8a96e]/20 whitespace-nowrap cursor-pointer active:scale-95"
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold uppercase tracking-[2px] text-[#111827] bg-[#c8a96e] hover:bg-[#a8843e] hover:text-white rounded-[2px] transition-all shadow-sm hover:shadow-[#c8a96e]/20 whitespace-nowrap cursor-pointer active:scale-95"
               >
                 <span>Enquire Now</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />

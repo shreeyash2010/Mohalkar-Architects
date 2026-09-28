@@ -55,6 +55,15 @@ function AppContent() {
     estimatedWeeks: string;
   } | null>(null);
   const [whatsappBubbleOpen, setWhatsappBubbleOpen] = useState<boolean>(false);
+  const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Reactive published projects list
   const [publishedProjects, setPublishedProjects] = useState<ProjectItem[]>(() =>
@@ -148,7 +157,7 @@ function AppContent() {
       className={`min-h-screen flex flex-col font-sans transition-colors duration-200 selection:bg-[#c8a96e] ${
         isDark
           ? "bg-[#0c0e12] text-[#e2e4e8] selection:text-[#0c0e12]"
-          : "bg-[#f8f9fb] text-[#1a1d24] selection:text-white"
+          : "bg-[#f7f5f2] text-[#3a3a3a] selection:text-[#111827]"
       }`}
     >
       {/* Dynamic SEO Meta Tag Manager */}
@@ -238,45 +247,45 @@ function AppContent() {
         }}
       />
 
-      {/* Floating WhatsApp Quick Action Button */}
-      <div className="fixed bottom-20 right-4 sm:bottom-22 sm:right-6 lg:bottom-6 lg:right-6 z-40 flex flex-col items-end">
+      {/* ── FLOATING WHATSAPP BUTTON (Reference site left placement) ── */}
+      <div className="fixed bottom-20 left-4 sm:bottom-6 sm:left-6 z-40 flex flex-col items-start">
         {whatsappBubbleOpen && (
           <div
             className={`mb-3 w-68 sm:w-72 rounded-xl p-4 text-xs space-y-3 shadow-2xl animate-in fade-in slide-in-from-bottom-2 duration-200 border ${
               isDark
                 ? "bg-[#141720] border-[#252830] text-neutral-300"
-                : "bg-white border-[#d8dde6] text-neutral-700 shadow-xl"
+                : "bg-white border-[#ebebeb] text-[#3a3a3a] shadow-xl"
             }`}
           >
             <div
               className={`flex items-center justify-between pb-2 border-b ${
-                isDark ? "border-[#252830]" : "border-[#e5e9f0]"
+                isDark ? "border-[#252830]" : "border-[#ebebeb]"
               }`}
             >
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className={`font-semibold ${isDark ? "text-white" : "text-neutral-900"}`}>
+                <span className={`font-semibold ${isDark ? "text-white" : "text-[#111827]"}`}>
                   Mohalkar Studio Direct
                 </span>
               </div>
               <button
                 onClick={() => setWhatsappBubbleOpen(false)}
                 className={`cursor-pointer ${
-                  isDark ? "text-neutral-400 hover:text-white" : "text-neutral-500 hover:text-neutral-900"
+                  isDark ? "text-neutral-400 hover:text-white" : "text-[#888888] hover:text-[#111827]"
                 }`}
                 aria-label="Close message"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
             </div>
-            <p className={`leading-relaxed text-[11px] ${isDark ? "text-neutral-300" : "text-neutral-600"}`}>
+            <p className={`leading-relaxed text-[11px] ${isDark ? "text-neutral-300" : "text-[#555555]"}`}>
               Chat directly with Founder &amp; Principal Architect Abhishek Mohalkar regarding your upcoming project.
             </p>
             <a
               href={SITE_INFO.contacts.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-2 bg-[#25d366] hover:bg-[#20ba59] text-black font-semibold uppercase tracking-wider rounded-md flex items-center justify-center gap-1.5 transition-colors text-[10px] shadow-sm"
+              className="w-full py-2 bg-[#25d366] hover:bg-[#128C7E] text-white font-semibold uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors text-[10px] shadow-sm"
             >
               <span>Open WhatsApp Chat</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -286,13 +295,27 @@ function AppContent() {
 
         <button
           onClick={() => setWhatsappBubbleOpen(!whatsappBubbleOpen)}
-          className="w-13 h-13 rounded-full bg-[#25d366] hover:bg-[#20ba59] text-black flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer border-2 border-white/20"
+          className="whatsapp-float w-14 h-14 rounded-full bg-[#25d366] hover:bg-[#128C7E] text-white flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer border-2 border-white/20"
           title="Direct WhatsApp with Principal Architect"
           aria-label="WhatsApp with Principal Architect"
         >
           <MessageCircle className="w-6 h-6 fill-current" />
         </button>
       </div>
+
+      {/* ── SCROLL TO TOP BUTTON (Reference site right placement) ── */}
+      {showScrollTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-20 right-4 sm:bottom-8 sm:right-8 z-40 w-11 h-11 rounded-full bg-[#c8a96e] hover:bg-[#a8843e] text-[#111827] hover:text-white flex items-center justify-center shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border border-[#c8a96e]/40"
+          title="Scroll to Top"
+          aria-label="Scroll to Top"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </button>
+      )}
 
       {/* Vercel Web Analytics */}
       <Analytics />

@@ -5,13 +5,15 @@ import { generateCostEstimatePdf } from '../utils/blueprintPdfGenerator';
 interface CostEstimatorModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onFillEnquiry: (data: { typology: string; sqft: string; budget: string }) => void;
+  onFillEnquiry?: (data: { typology: string; sqft: string; budget: string }) => void;
+  onApplyEstimate?: (details: { type: string; area: number; tier: string; estimatedWeeks: string }) => void;
 }
 
 export const CostEstimatorModal: React.FC<CostEstimatorModalProps> = ({
   isOpen,
   onClose,
-  onFillEnquiry
+  onFillEnquiry,
+  onApplyEstimate
 }) => {
   if (!isOpen) return null;
 
@@ -74,11 +76,21 @@ export const CostEstimatorModal: React.FC<CostEstimatorModalProps> = ({
   };
 
   const handleProceedToBrief = () => {
-    onFillEnquiry({
-      typology,
-      sqft: `${sqft.toLocaleString('en-IN')} sq.ft`,
-      budget: budgetString
-    });
+    if (onFillEnquiry) {
+      onFillEnquiry({
+        typology,
+        sqft: `${sqft.toLocaleString('en-IN')} sq.ft`,
+        budget: budgetString
+      });
+    }
+    if (onApplyEstimate) {
+      onApplyEstimate({
+        type: typology,
+        area: sqft,
+        tier: `${qualityTier} (${budgetString})`,
+        estimatedWeeks: '8-14 weeks'
+      });
+    }
     onClose();
   };
 
