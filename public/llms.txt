@@ -12,7 +12,7 @@
   - Bhoom, Dharashiv, Maharashtra, India
 - **Phone**: +91 9146079235 / +91 8698300048
 - **Email**: mohalkararchitectsandplanners@gmail.com
-- **Website**: https://mohalkar-architects-planners-a25s.vercel.app/
+- **Website**: https://mohalkar-architects-planners.vercel.app/
 - **Working Hours**: Monday – Saturday: 9:30 AM – 7:30 PM (IST)
 - **Instagram**: https://www.instagram.com/abhi_mohalkar/
 
@@ -31,9 +31,9 @@
 - 100% statutory adherence and client satisfaction.
 
 ## Website Navigation
-- Home: https://mohalkar-architects-planners-a25s.vercel.app/
-- About Us & Leadership: https://mohalkar-architects-planners-a25s.vercel.app/about
-- Project Portfolio: https://mohalkar-architects-planners-a25s.vercel.app/projects
-- Typologies & Expertise: https://mohalkar-architects-planners-a25s.vercel.app/expertise
-- Scope & Services: https://mohalkar-architects-planners-a25s.vercel.app/services
-- Consultation & Inquiries: https://mohalkar-architects-planners-a25s.vercel.app/enquiry
+- Home: https://mohalkar-architects-planners.vercel.app/
+- About Us & Leadership: https://mohalkar-architects-planners.vercel.app/about
+- Project Portfolio: https://mohalkar-architects-planners.vercel.app/projects
+- Typologies & Expertise: https://mohalkar-architects-planners.vercel.app/expertise
+- Scope & Services: https://mohalkar-architects-planners.vercel.app/services
+- Consultation & Inquiries: https://mohalkar-architects-planners.vercel.app/enquiry

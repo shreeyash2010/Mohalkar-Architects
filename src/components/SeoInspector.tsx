@@ -37,8 +37,8 @@ export const SeoInspector: React.FC<SeoInspectorProps> = ({
             <strong>Master Canonical URL:</strong>{' '}
             <span className="text-amber-600 dark:text-amber-400 font-mono break-all">
               {typeof document !== 'undefined'
-                ? document.querySelector('link[rel="canonical"]')?.getAttribute('href') || 'https://mohalkar-architects-planners-a25s.vercel.app/'
-                : 'https://mohalkar-architects-planners-a25s.vercel.app/'}
+                ? document.querySelector('link[rel="canonical"]')?.getAttribute('href') || 'https://mohalkar-architects-planners.vercel.app/'
+                : 'https://mohalkar-architects-planners.vercel.app/'}
             </span>
           </div>
           <div className="text-neutral-600 dark:text-neutral-300">

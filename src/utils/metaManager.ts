@@ -1,7 +1,7 @@
 import { ProjectItem } from "../data/projectsData";
 import { LeadershipProfile, SITE_INFO } from "../data/siteData";
 
-export const PRIMARY_CANONICAL_DOMAIN = "https://mohalkar-architects-planners-a25s.vercel.app";
+export const PRIMARY_CANONICAL_DOMAIN = "https://mohalkar-architects-planners.vercel.app";
 
 /**
  * Resolves the authoritative master domain for canonical tags.
@@ -38,9 +38,9 @@ export const BASE_STUDIO_NAME = "Mohalkar Architects & Planners";
 
 export const TAB_META_CONFIGS: Record<string, TabMetaData> = {
   home: {
-    title: "Mohalkar Architects & Planners | Luxury Architecture & Urban Planning",
+    title: "Mohalkar Architects & Planners | Architectural Studio in Pune Dharshiv & Bhoom",
     description:
-      "Premier architectural studio and urban planning consultancy in Pune & Maharashtra specializing in bespoke residential, commercial, interior, and landscape design.",
+      "Mohalkar Architects & Planners: residential, commercial, interior, landscape and urban planning design.",
     keywords:
       "Mohalkar Architects, architecture firm Pune, luxury villa architects, urban planners Maharashtra, architectural consultancy India",
     canonicalPath: "/",

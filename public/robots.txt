@@ -4,4 +4,4 @@ Allow: /
 Disallow: /admin
 
 # Canonical XML Sitemap
-Sitemap: https://mohalkar-architects-planners-a25s.vercel.app/sitemap.xml
+Sitemap: https://mohalkar-architects-planners.vercel.app/sitemap.xml

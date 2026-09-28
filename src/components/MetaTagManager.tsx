@@ -6,7 +6,7 @@ import { LeadershipProfile } from "../data/siteData";
 
 export const PRIMARY_CANONICAL_DOMAIN =
   (metaManagerModule as any).PRIMARY_CANONICAL_DOMAIN ||
-  "https://mohalkar-architects-planners-a25s.vercel.app";
+  "https://mohalkar-architects-planners.vercel.app";
 
 const applyMetaTags =
   (metaManagerModule as any).applyMetaTags ||
