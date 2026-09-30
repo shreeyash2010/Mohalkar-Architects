@@ -38,9 +38,14 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
         />
 
         <div className="relative z-10 max-w-4xl mx-auto text-center px-4 sm:px-6 py-28 sm:py-36 text-white space-y-4">
-          <p className="font-sans text-[0.78rem] font-medium tracking-[4px] uppercase text-[#c8a96e] mb-3">
-            {SITE_INFO.established}
-          </p>
+          <div className="space-y-1 mb-2">
+            <span className="font-sans text-xs sm:text-sm font-semibold tracking-[4px] uppercase text-[#c8a96e] block">
+              Mohalkar Architects &amp; Planners
+            </span>
+            <p className="font-sans text-[0.72rem] sm:text-xs font-light tracking-[3px] uppercase text-white/70">
+              {SITE_INFO.established}
+            </p>
+          </div>
 
           <h1 className="font-serif text-3xl sm:text-5xl md:text-7xl font-light text-white tracking-normal leading-[1.12] mb-4 text-balance">
             &ldquo;Every Space Has a Story <br className="hidden sm:inline" />
