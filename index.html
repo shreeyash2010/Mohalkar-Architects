@@ -19,6 +19,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta name="twitter:url" content="https://mohalkar-architects-planners.vercel.app/" />
     <link rel="alternate" hreflang="en" href="https://mohalkar-architects-planners.vercel.app/" />
     <link rel="alternate" hreflang="x-default" href="https://mohalkar-architects-planners.vercel.app/" />
+    <script>
+      (function() {
+        try {
+          var p = window.location.pathname.replace(/\/+$/, '') || '';
+          var full = 'https://mohalkar-architects-planners.vercel.app' + (p ? p : '/');
+          var c = document.querySelector('link[rel="canonical"]');
+          if (c) c.setAttribute('href', full);
+          var og = document.querySelector('meta[property="og:url"]');
+          if (og) og.setAttribute('content', full);
+          var tw = document.querySelector('meta[name="twitter:url"]');
+          if (tw) tw.setAttribute('content', full);
+          var alts = document.querySelectorAll('link[rel="alternate"][hreflang]');
+          alts.forEach(function(el) { el.setAttribute('href', full); });
+        } catch(e) {}
+      })();
+    </script>
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
